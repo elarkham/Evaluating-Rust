@@ -1,0 +1,20 @@
+# Ignore everything
+*
+
+# Whitelist subdirectories
+!*/
+
+# Whitelist the following extensions
+!*.c
+!*.h
+!*.rs
+!*.tex
+!*.txt
+!*.sh
+!*.mk
+
+# Whitelist specific filenames
+!*.gitignore
+!*README
+!*LICENSE
+!*Makefile

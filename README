@@ -1,0 +1,12 @@
+Senior Project - Evaluate the Rust programming language
+Authors: Ethan Larkham & Todd Gaunt
+
+Project structure:
+	rust:
+		Contains all rust source code and test programs.
+	cpp:
+		Contains all C++ source code and test programs.
+	doc:
+		Documentation concerning the project.
+	bin:
+		Random binary files that are useful, such as git hooks.
