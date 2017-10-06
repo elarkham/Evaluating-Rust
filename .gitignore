@@ -12,6 +12,7 @@
 !*.txt
 !*.sh
 !*.mk
+!*.odt
 
 # Whitelist specific filenames
 !*.gitignore
