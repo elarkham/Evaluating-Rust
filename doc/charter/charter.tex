@@ -1,0 +1,106 @@
+\documentclass[10pt,a4paper]{report}
+\usepackage[top=1in, left=0.5in, right=0.5in, bottom=1.5in]{geometry}
+\usepackage{titlesec}
+\usepackage{tabulary}
+\usepackage{tabularx}
+
+\pagenumbering{gobble}
+\begin{document}
+% Title
+\begin{center}
+	{\Large Project Charter: {\bfseries Rust Evaluation}}
+	- {\large{\itshape Ethan Larkham} and {\itshape Todd Gaunt}}
+	- {\large October 13, 2017}
+\end{center}
+\vspace{0.5em}
+\paragraph{Background}
+Rust is a new programming language being developed by Mozilla, released in 2015
+aimed at system application developers. Many of its competitors such as C++ are
+not memory safe and are prone to security problems such buffer overflow
+exploits. Rust aims to resolve these issues as a completely new language by
+enforcing a strict emphasis on memory safety and program correctness during
+compile time rather than run time, while maintaining competitive performance. 
+The goal of Rust to reduce security problems while maintaining comparable
+performance with C++ in concurrent programs will be the primary subject of this
+evaluation.
+\paragraph{Goals}
+\begin{flushleft}
+	\begin{itemize}
+		\item Measure performance of concurrent programs
+		\item Analysis of Rust compile time error checking
+		\item Evaluation of language ergonomics
+	\end{itemize}
+\end{flushleft}
+\paragraph{Scope}
+The end result of the project will be a presentation, most likely in the form
+of a research paper and or poster, of our findings during our evaluation of
+Rust.  We will be implementing 4 program specifications twice, once in C++ and
+once in Rust. This will allow for analysis of the differences in performance,
+ease of use and generated assembly code of each language. At this time we
+intend to implement a concurrent hash table, Jacobi temperature simulation,  Pi
+digits, and the Gaussian function. Both of us will be implementing the two
+programs for each specification separately and alternating between which of us
+will do the Rust version and the C++ version. 
+\paragraph{Key Stakeholders}
+\begin{flushleft}
+	\begin{tabulary}{\textwidth}{ | L | L | }
+		\hline
+		Client/Sponser & Professor Philip J. Hatcher \\
+		\hline
+		Project Manager & Collette Matthias Powers \\
+		\hline
+		Project Team Members & Ethan Larkham and Todd Gaunt \\
+		\hline
+	\end{tabulary}
+\end{flushleft}
+\paragraph{Project Milestones}
+\begin{flushleft}
+	\begin{tabulary}{\textwidth}{ | L | L | }
+		\hline
+		Learn Rust Language & October 28, 2017 \\
+		\hline
+		Implement Concurrent Hash Tables & November 9, 2017 \\
+		Analysis of Concurrent Hash Tables & November 13, 2017 \\
+		\hline
+		Implement Jacobi Temperature Simulation & November 28, 2017 \\
+		Analysis of Jacobi & December 5, 2017 \\
+		\hline
+		Implement Pi Digits & January 30, 2017 \\
+		Analysis of Pi Digits & February 4, 2017 \\
+		\hline
+		Implement Gaussian Function & February 18, 2017 \\
+		Analysis of Gaussian Function & February 22, 2017 \\
+		\hline
+		Compile Findings into Research Paper & April 15, 2018 \\
+		\hline
+	\end{tabulary}
+\end{flushleft}
+\paragraph{Constraints, Assumptions, Risks and Dependencies}
+\begin{flushleft}
+	\begin{tabulary}{\textwidth}{ | L | L | }
+		\hline
+		Constraints & Unable to objectively quantify language
+		ergonomics \\
+		\hline
+		Assumptions & Rust will be able to implement programs in a
+		comparable way to C++. \\
+		\hline
+		Risks and Dependencies & There are tools liek valgrind to
+		verify and benchmark the Rust language. Must learn Rust "good
+		practice". \\
+		\hline
+	\end{tabulary}
+\end{flushleft}
+\paragraph{Approval Signatures}
+\begin{flushleft}
+	\begin{tabularx}{\textwidth}{@{\extracolsep{\fill}} | X | X | }
+		\hline
+		& \\
+		& \\
+		\hline
+		Philip J. Hatcher, Project Client/Sponser & Collette Matthias
+		Powers, Project Manager \\
+		\hline
+	\end{tabularx}
+\end{flushleft}
+\end{document}
