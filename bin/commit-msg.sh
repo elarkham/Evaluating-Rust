@@ -40,7 +40,7 @@ while true; do
 		exit 0
 	fi
 
-	printf -- "Validation failed, return to \"%s\"? [Y/n]\n" "$EDITOR"
+	printf -- "Validation failed, [f]orce commit or return to \"%s\"? [Y/n]\n" "$EDITOR"
 
 	read REPLY
 	case "$REPLY" in
@@ -50,6 +50,8 @@ while true; do
 	N|n)
 		exit -1
 		;;
+	F|f)
+		exit 0;
 	*)
 		$EDITOR $1
 		;;
