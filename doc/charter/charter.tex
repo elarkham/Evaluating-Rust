@@ -19,7 +19,7 @@ aimed at system application developers. Many of its competitors such as C++ are
 not memory safe and are prone to security problems such buffer overflow
 exploits. Rust aims to resolve these issues as a completely new language by
 enforcing a strict emphasis on memory safety and program correctness during
-compile time rather than run time, while maintaining competitive performance. 
+compile time rather than run time, while maintaining competitive performance.
 The goal of Rust to reduce security problems while maintaining comparable
 performance with C++ in concurrent programs will be the primary subject of this
 evaluation.
@@ -40,7 +40,7 @@ ease of use and generated assembly code of each language. At this time we
 intend to implement a concurrent hash table, Jacobi temperature simulation,  Pi
 digits, and the Gaussian function. Both of us will be implementing the two
 programs for each specification separately and alternating between which of us
-will do the Rust version and the C++ version. 
+will do the Rust version and the C++ version.
 \paragraph{Key Stakeholders}
 \begin{flushleft}
 	\begin{tabulary}{\textwidth}{ | L | L | }
@@ -85,9 +85,9 @@ will do the Rust version and the C++ version.
 		Assumptions & Rust will be able to implement programs in a
 		comparable way to C++. \\
 		\hline
-		Risks and Dependencies & There are tools liek valgrind to
-		verify and benchmark the Rust language. Must learn Rust "good
-		practice". \\
+		Risks and Dependencies & We need to find tools to test and
+    benchmark Rust with and learn the design patterns commonly
+    used by the community. \\
 		\hline
 	\end{tabulary}
 \end{flushleft}
