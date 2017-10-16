@@ -1,0 +1,12 @@
+During our meeting with Hatcher today we discussed the revised project
+charter and the due dates of the project milestones. He potentially wants to
+be able to digitally sign the charter as well.
+
+Goals:
+	- Determine if we are comparing against C or C++, which is best for
+	  Rust. C may be all we need / may be more comparable if we don't end
+	  up using any of C++'s object oriented features.
+	- Add 5th program for second semester to implement and analyze. This
+	  will push back the date of the final report compilation.
+	- Revise exact naming of the programs on the project charter to more
+	  accurately describe their functionality.
