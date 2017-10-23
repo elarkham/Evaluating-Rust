@@ -1,0 +1,5 @@
+The dates of the projects was made to be less specific, and the order of
+program implementation has been changed (as reflected on the project charter).
+The Hash Table implementation has been swapped with the pi digits
+implementation in terms of when its due. This week (10/23 - 10/28) I will
+begin implementing the C++ version of pi digits.
