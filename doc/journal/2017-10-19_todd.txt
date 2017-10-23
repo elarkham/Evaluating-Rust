@@ -1,0 +1,4 @@
+Began discussing with Ethan about the first program implementation, the
+Hash Table. We decided on implementing the hash table generically. Other than
+that we've both been working through the Rust documentation and it's examples
+to learn the language.
