@@ -1,0 +1,8 @@
+Attendees: Ethan Larkham and Todd Gaunt
+
+We showed Hatcher our project charter and briefly discussed what changes
+he thought we should make and what we could do to better conform with what
+Collette was asking for.
+
+Goals:
+  - Get feedback on project charter
