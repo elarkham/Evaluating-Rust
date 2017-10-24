@@ -1,0 +1,9 @@
+Attendees: Ethan Larkham and Todd Gaunt
+
+We asked Hatcher if it would be better if we changed our meetings from
+weekely to bi-weekly. In the end we decided to keep it weekely but
+changed the meeting time for 11:30am to 12:00pm.
+
+Goals:
+  - Ask Hatcher if he thought we should change the frequency of our
+    meetings
