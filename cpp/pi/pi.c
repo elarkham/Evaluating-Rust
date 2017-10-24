@@ -35,14 +35,14 @@ int split;
 /* Child threads drop values into the array */
 double partial_sum[THREAD_MAX];
 
-	void
+void
 usage()
 {
 	fprintf(stderr, "Usage: "PROG_NAME" [NUMBER OF THREADS]\n");
 	exit(EXIT_FAILURE);
 }
 
-	void *
+void *
 work(void *in)
 {
 	int i;
@@ -73,7 +73,7 @@ work(void *in)
 	return 0;
 }
 
-	int
+int
 main(int argc, char **argv)
 {
 	size_t i = 0;
