@@ -1,0 +1,9 @@
+2017-10-24
+	I took the example from hatcher and began modifying the code to allow
+	more paramters for analysis of the program. I ran into a particularly
+	annoying issue when trying to refactor the thread-creation code; Threads
+	needed both constant state and variable state. This meant I couldn't
+	just create a worker_context struct to pass in state, but instead had
+	to use global variables like Hatcher did with the threads. This is a
+	flaw with the design of the pthreads library, which makes writing
+	threaded applications with it harder.
