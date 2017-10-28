@@ -8,7 +8,7 @@ LIBPREFIX := $(PREFIX)/lib
 MANPREFIX := $(PREFIX)/man
 
 # Linking flags
-LDFLAGS := 
+LDFLAGS :=
 
 # C Compiler settings
 CC := g++

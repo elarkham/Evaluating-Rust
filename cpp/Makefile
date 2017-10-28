@@ -2,36 +2,37 @@
 # Project configuration
 include config.mk
 
-LDFLAGS += 
-MODULES :=
-LIBS :=
+TARGET :=
+LDFLAGS :=
+MODULES := pi
 SRC :=
+
+BUILD=build
 
 # Include project modules
 include $(patsubst %, %/module.mk, $(MODULES))
 
-OBJ := $(patsubst %.c, build/%.o, $(filter %.c, $(SRC)))
+OBJ := $(patsubst %.c, $(BUILD)/%.o, $(filter %.c, $(SRC)))
 
 # Standard build
-build/%.o: %.c
+$(BUILD)/%.o: %.c
 	@printf "CC [R] $@\n"
 	@mkdir -p $(shell dirname $@)
 	@$(CC) $(CFLAGS) $(LDFLAGS) -c -o $@ $<
 
 # Standard targets
-all: options
+all: options $(TARGET)
 
 options: config.mk
 	@printf -- "build options:\n"
 	@printf -- "CFLAGS  = %s\n" "$(CFLAGS)"
 	@printf -- "LDFLAGS = %s\n" "$(LDFLAGS)"
 	@printf -- "CC      = %s\n" "$(CC)"
-	@echo $(OBJ_DEBUG)
 
 dist: clean
 
 clean:
 	@printf "Cleaning\n"
-	@rm -rf build
+	@rm -rf $(BUILD)
 
 .PHONY: all options check clean dist install uninstall
