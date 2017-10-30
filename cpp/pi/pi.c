@@ -29,18 +29,18 @@
 /* The maximum number of child threads that can be used */
 #define THREAD_MAX 24
 
-/* Number of threads, default number is 2 */
-int n_threads = 1;
 /* Number of intervals per thread */
-int chunk;
+size_t chunk;
 /* Processor IDs less than split have one extra interval */
-int split;
+size_t split;
 /* Child threads drop values into the array */
-double partial_sum[4];
+double partial_sum[THREAD_MAX];
 
 /* Fits inside a register */
 struct worker_context {
-	uint32_t id;
+	/* Beginning index to use for the partial_sum array */
+	uint32_t index;
+	/* Number of sums to calculate */
 	uint32_t n_sums;
 };
 
@@ -56,27 +56,23 @@ usage()
 void *
 work(void *in)
 {
-	int i;
-	int j;
+	size_t i;
+	size_t j;
 	/* First interval to be processed */
-	int low;                 
+	size_t low;                 
 	/* First interval *not* to be processed */
-	int high;              
+	size_t high;              
 	/* Sum for intervals being processed */
 	double localSum = 0.0;   
 	/* Mid-point of an interval */
 	double x;                
 	/* Retrieve the thread context passed in */
 	worker_context wc = (*((worker_context *) &in));
-	uint32_t id = wc.id;
-	uint32_t n_sums = wc.n_sums;
-	/* Beginning index to use for the partial_sum array */
-	size_t index = id * 2;
 
 	/* Calculate n_sums partial sums and store them into the array starting
 	 * at the index provided by worker_context */
-	for (i = index; i < index + n_sums; ++i) {
-		if (i + 1 < split) {
+	for (i = wc.index; i < wc.index + wc.n_sums; ++i) {
+		if (i < split) {
 			low = (i * (chunk + 1));
 			high = low + (chunk + 1);
 		} else {
@@ -99,11 +95,13 @@ int
 main(int argc, char **argv)
 {
 	size_t i = 0;
+	/* Number of threads, default number is 2 */
+	size_t n_threads = 4;
 	/* Number of partial sums to calculate, default is 2 */
-	size_t n = 2;
+	size_t n = 16;
 	double sum = 0.0;
 	pthread_t pid[THREAD_MAX] = {0};
-	int16_t n_sums = n / n_threads;
+	uint32_t n_sums = n / n_threads;
 
 	//TODO(todd): Start timer here.
 	chunk = INTERVALS / n;
@@ -114,8 +112,8 @@ main(int argc, char **argv)
 	}
 	/* Create the worker threads */
 	for (i = 0; i < n_threads; ++i) {
-		worker_context wc = {i, n_sums};
-		// Cast magic
+		worker_context wc = {i * n_sums, n_sums};
+		/* Cast magic */
 		long k = *((size_t *) &wc);
 		if (0 != pthread_create(&pid[i], NULL, work, (void *) k))
 			EPRINT("could not create thread\n");
@@ -124,7 +122,7 @@ main(int argc, char **argv)
 	for (i = 0; i < n_threads; i++) {
 		if (pthread_join(pid[i], NULL))
 			EPRINT("could not join thread\n");
-		for (size_t j = i * 2; j < i * 2 + n_sums; ++j) {
+		for (size_t j = i * n_sums; j < i * n_sums + n_sums; ++j) {
 			sum += partial_sum[j];
 		}
 	}
