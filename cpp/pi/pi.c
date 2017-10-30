@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <unistd.h>
 
 #define PROG_NAME "pi"
@@ -82,6 +83,7 @@ main (int argc, char *argv[])
 	pthread_t *ptid;
 	/* Final summed value of all work done between threads */
 	double sum = 0.0;
+	clock_t start, stop;
 
 	if (argc !=2)
 		usage();
@@ -97,6 +99,8 @@ main (int argc, char *argv[])
 		split = n;
 		chunk -= 1;
 	}
+	/* Start the timer */
+	start = clock();
 	for (i = 0; i < n; ++i) {
 		if (pthread_create(&ptid[i], NULL, work, (void *) i) != 0)
 			EPRINT("Could not create thread\n");
@@ -111,6 +115,10 @@ main (int argc, char *argv[])
 		sum += partial_sums[i];
 	}
 	sum *= 1.0/INTERVALS;
-	printf ("Estimation of pi is %14.12f\n", sum);
+	/* End the timer */
+	stop = clock();
+	/* Print out total runtime of algorithm */
+	printf("%f\n", (double)(stop - start) / CLOCKS_PER_SEC);
+	//printf ("Estimation of pi is %14.12f\n", sum);
 	return 0;
 }
