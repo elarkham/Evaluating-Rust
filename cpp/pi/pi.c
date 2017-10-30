@@ -1,135 +1,123 @@
-// pi4.c (Uses Posix threads on Linux, Sept 12)
-// child threads put partial sum in an array
-// thread_join used to have main thread wait
-// main thread sums values in array to get final sum
+/* See LICENSE file for copyright and license details */
+/**
+ * Authors:
+ *	Philip J. Hatcher
+ *	Todd O. Gaunt
+ * Description:
+ *	Concurrently compute an approximation of pi.
+ */
 
+#include <errno.h>
+#include <pthread.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
 #include <unistd.h>
-#include <pthread.h>
 
-// how many intervals to divide [0,1] into
+#define PROG_NAME "pi"
+
+#define EPRINT(...) \
+	do { \
+		fprintf(stderr, PROG_NAME": error: "__VA_ARGS__); \
+		exit(EXIT_FAILURE); \
+	} while (0);
+
+/* Number of intervals to divide the area beneath the curve in [0,1] into */
 #define INTERVALS 50000000
 
 // width of an interval
 #define WIDTH (1.0/INTERVALS)
 
-// the maximum number of child threads that can be used
-#define MAX_T 24
+/* Number of intervals each thread will calculate */
+size_t chunk;
 
-// array for storing thread IDs
-pthread_t pt[MAX_T];
+/* Processor IDs less than split have one extra interval */
+size_t split;
 
-// child threads drop values into the array
-double partialSums[MAX_T];
+/* Child threads drop values of their interval calculation into the array */
+double *partial_sums;
 
-// number of intervals per thread
-int chunk;
-
-// processor IDs less than split have one extra interval
-int split;
-
-// prints usage message if command line arguments are not what is expected
-// program expects a single argument: the number of child threads to create
-void usage(char *);
-
-// prints an error message and terminates the program
-void error(char *);
-
-// this is the work executed by each child thread
-void * work(void *);
-
-int main (int argc, char *argv[])
+void
+usage()
 {
-   long i;
-   int n; // number of child threads to create */
-
-   if (argc !=2) usage("pi numofthreads\n");
-
-   n = atoi(argv[1]);
-
-   if (n <= 0) usage("number of threads must be > 0");
-
-   if (n > MAX_T) usage("too many threads requested");
-
-   printf("%d (child) threads used\n", n);
-
-   chunk = INTERVALS / n;
-   split = INTERVALS % n;
-   if (split == 0)
-   {
-      split = n;
-      chunk -= 1;
-   }
-
-   // create n threads
-   for (i=0; i < n; i++)
-   {
-      /* create threads; DANGER: thread logical id (int) passed as "void *" */
-      if (pthread_create(&pt[i], NULL, work, (void *) i) != 0)
-         error("error in thread create");
-   }
-
-   double sum = 0.0;
-
-   // wait for each thread to finish
-   for (i=0; i < n; i++)
-   {
-     if (pthread_join(pt[i], NULL))
-     {
-       error("error in thread join");
-     }
-     sum += partialSums[i];
-   }
-   sum *= 1.0/INTERVALS;
-
-   printf ("Estimation of pi is %14.12f\n", sum);
-
-   return 0;
+	fprintf(stderr, "Usage: "PROG_NAME" [NUMBER OF THREADS]\n");
+	exit(EXIT_FAILURE);
 }
 
-void * work(void * in)
+void *
+work(void *in)
 {
-   int i;
-   int low;                 // first interval to be processed
-   int high;                // first interval *not* to be processed
-   double localSum = 0.0;   // sum for intervals being processed
-   double x;                // mid-point of an interval
-   long id = (long) in;     // logical thread id (0..n-1)
+	size_t i;
+	size_t low;                 // first interval to be processed
+	size_t high;                // first interval *not* to be processed
+	double localSum = 0.0;   // sum for intervals being processed
+	double x;                // mid-point of an interval
+	size_t id = (size_t)in;
 
-   if (id < split)
-   {
-      low = (id * (chunk + 1));
-      high = low + (chunk + 1);
-   }
-   else
-   {
-      low = (split * (chunk + 1)) + ((id - split) * chunk);
-      high = low + chunk;
-   }
+	if (id < split)
+	{
+		low = (id * (chunk + 1));
+		high = low + (chunk + 1);
+	}
+	else
+	{
+		low = (split * (chunk + 1)) + ((id - split) * chunk);
+		high = low + chunk;
+	}
 
-   x = (low+0.5)*WIDTH;
-   for (i = low; i < high; i++)
-   {
-      localSum += (4.0/(1.0+x*x));
-      x += WIDTH;
-   }
+	x = (low+0.5)*WIDTH;
+	for (i = low; i < high; i++)
+	{
+		localSum += (4.0/(1.0+x*x));
+		x += WIDTH;
+	}
 
-   partialSums[id] = localSum;
+	partial_sums[id] = localSum;
 
-   return 0;
+	return 0;
 }
 
-void error(char *str)
+int
+main (int argc, char *argv[])
 {
-    perror(str);
-    exit(-1);
-}
+	size_t i;
+	/* Number of child threads to create. Note that the final approximation
+	 * of pi may be different depending on how many threads are used to do
+	 * floating point addition rounding. */
+	size_t n; 
+	/* Array for storing thread IDs */
+	pthread_t *ptid;
+	/* Final summed value of all work done between threads */
+	double sum = 0.0;
 
-void usage(char *str)
-{
-   fprintf(stderr, "usage: %s\n",str);
-   exit(-1);
+	if (argc !=2)
+		usage();
+	n = atoi(argv[1]);
+	if (n <= 0)
+		EPRINT("Less than 0 child threads requested\n")
+	/* Allocate according to the number of threads requested */
+	ptid = malloc(sizeof(*ptid) * n);
+	partial_sums = malloc(sizeof(*partial_sums) * n);
+	chunk = INTERVALS / n;
+	split = INTERVALS % n;
+	if (0 == split) {
+		split = n;
+		chunk -= 1;
+	}
+	for (i = 0; i < n; ++i) {
+		if (pthread_create(&ptid[i], NULL, work, (void *) i) != 0)
+			EPRINT("Could not create thread\n");
+	}
+	/* Wait for each thread to finish */
+	for (i = 0; i < n; ++i)
+	{
+		if (pthread_join(ptid[i], NULL))
+		{
+			EPRINT("Could not join thread\n");
+		}
+		sum += partial_sums[i];
+	}
+	sum *= 1.0/INTERVALS;
+	printf ("Estimation of pi is %14.12f\n", sum);
+	return 0;
 }
-
