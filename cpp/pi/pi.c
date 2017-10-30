@@ -54,26 +54,19 @@ work(void *in)
 	double x;                // mid-point of an interval
 	size_t id = (size_t)in;
 
-	if (id < split)
-	{
+	if (id < split) {
 		low = (id * (chunk + 1));
 		high = low + (chunk + 1);
-	}
-	else
-	{
+	} else {
 		low = (split * (chunk + 1)) + ((id - split) * chunk);
 		high = low + chunk;
 	}
-
 	x = (low+0.5)*WIDTH;
-	for (i = low; i < high; i++)
-	{
+	for (i = low; i < high; i++) {
 		localSum += (4.0/(1.0+x*x));
 		x += WIDTH;
 	}
-
 	partial_sums[id] = localSum;
-
 	return 0;
 }
 
