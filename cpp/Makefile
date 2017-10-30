@@ -19,6 +19,7 @@ $(BUILD)/%.o: %.c
 	@printf "CC [R] $@\n"
 	@mkdir -p $(shell dirname $@)
 	@$(CC) $(CFLAGS) $(LDFLAGS) -c -o $@ $<
+	@$(CC) $(CFLAGS) $(LDFLAGS) -S -o $(@:.o=.s) $<
 
 # Standard targets
 all: options $(TARGET)
