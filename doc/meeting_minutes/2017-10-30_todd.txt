@@ -1,0 +1,9 @@
+Attendees: Ethan Larkham and Todd Gaunt
+
+We cleared up some confusion about the pi program and how it was implemented.
+We discussed how the rust version should be at least partially implemented by
+next meeting
+
+Goals:
+	- Rust version of pi progress discussed.
+	- Cleared up some confusion of C++ pi implementation.
