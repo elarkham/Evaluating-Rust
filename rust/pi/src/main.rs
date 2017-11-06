@@ -1,5 +1,7 @@
 /* See LICENSE file for copyright and license details
-** Author: Ethan Larkham
+** Authors:
+**     Ethan Larkham
+**     Todd Gaunt
 ** Description:
 **  Concurrently compute an approximation of pi
 */
@@ -9,6 +11,8 @@ use std::cmp::Ordering;
 use std::sync::mpsc;
 use std::env;
 use std::process;
+extern crate time;
+use time::PreciseTime;
 
 /* Number of intervals to divide the area beneath the curve in [0,1] into */
 const INTERVALS : usize = 50000000;
@@ -44,6 +48,7 @@ fn main() {
         chunk -= 1;
     }
 
+    let start = PreciseTime::now();
     for i in (0..).take(n_thread) {
       let tx = tx.clone();
       thread::spawn(move || {
@@ -73,6 +78,8 @@ fn main() {
         sum += rx.recv().unwrap();
     }
     sum *= 1.0 / INTERVALS as f64;
+    let stop = PreciseTime::now();
 
-    println!("pi equals {}", sum);
+    println!("{}", start.to(stop));
+    //println!("pi equals {}", sum);
 }
