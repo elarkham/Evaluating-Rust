@@ -1,0 +1,27 @@
+I have completed the rust version of the pi digits program.
+
+Since Rust's concurrency system is similar to Go's I mostly used this
+Go program as reference: https://golang.org/doc/play/pi.go
+
+Todd/Hatchers version was referenced later in order to better manage
+the thread spawning since with the Go-referenced version I spawned
+one thread for each interval.
+
+Thoughts while creating the program:
+- Was much easier to create and understand than the C version
+
+- Rust's use of concurrency is much simpler and intuitive than pthreads
+
+- I found it very simple to get the program working quickly and then
+  cleaned up the code after the fact to be more accurate. Some languages
+  (to their detriment) don't allow such technical debt to accumulate and
+  as such make prototyping difficult.
+
+- It bothered me that Rust's offical vim plugin overrides my settings to
+  force my tab button to create four spaces instead of my preffered two.
+  After some research I found out that this is Rust's "official style".
+  I don't believe a languages "official style guide" should be by default
+  enforced in their IDE plugins that should only otherwise be used for
+  syntax highlighting, I am very disapointed in them.
+
+- Language overall was fairly pleasant to program with (exluding the tabs).

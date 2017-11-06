@@ -1,0 +1,12 @@
+Todd updated charter with less specific milestone dates.
+
+I read through Rust documentation and created some minor test programs
+to get a better feel for the language. Since I am the one who will be
+implementing the Rust version of pi digits, I will need to understand
+the language before I can begin.
+
+My surface thoughts on the language so far are
+- It's package manager "Cargo" is simple to use and intuitive
+- I am pleased by its use of pattern matching
+- Arthimetic is a pain since you can't add floats to ints without
+  manually casting one to the other
