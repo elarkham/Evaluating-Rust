@@ -7,31 +7,44 @@
 use std::thread;
 use std::cmp::Ordering;
 use std::sync::mpsc;
+use std::env;
+use std::process;
 
 /* Number of intervals to divide the area beneath the curve in [0,1] into */
 const INTERVALS : usize = 50000000;
 
 /* Width of an interval */
-const WIDTH: f64 = 1.0 / INTERVALS;
+const WIDTH: f64 = 1.0 / INTERVALS as f64;
 
-/* Number of threads being used*/
-const THREAD: usize = 4;
+fn usage() {
+    eprint!("Usage: pi [NUMBER_OF_THREADS]\n");
+}
 
 fn main() {
     let (tx, rx) = mpsc::channel();
 
+    let args: Vec<String> = env::args().collect();
+
+    if 2 != args.len() {
+        usage();
+        process::exit(-1);
+    }
+
+    // Number of threads to use
+    let n_thread = args[1].parse::<usize>().unwrap();
+
     // Number of intervals each thread will calculate
-    let mut chunk = INTERVALS / THREADS;
+    let mut chunk = INTERVALS / n_thread;
 
     // Thread index less than split have one extra interval
-    let mut split = INTERVALS % THREADS;
+    let mut split = INTERVALS % n_thread;
 
     if split == 0 {
-        split = THREADS;
+        split = n_thread;
         chunk -= 1;
     }
 
-    for i in (0..).take(THREADS) {
+    for i in (0..).take(n_thread) {
       let tx = tx.clone();
       thread::spawn(move || {
           // first interval to be processed
@@ -56,7 +69,7 @@ fn main() {
     }
 
     let mut sum = 0.0;
-    for _ in (0..).take(THREADS) {
+    for _ in (0..).take(n_thread) {
         sum += rx.recv().unwrap();
     }
     sum *= 1.0 / INTERVALS as f64;
