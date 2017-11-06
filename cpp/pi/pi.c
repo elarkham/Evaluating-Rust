@@ -19,7 +19,7 @@
 
 #define EPRINT(...) \
 	do { \
-		fprintf(stderr, PROG_NAME": error: "__VA_ARGS__); \
+		fprintf(stderr, PROG_NAME ": error: " __VA_ARGS__); \
 		exit(EXIT_FAILURE); \
 	} while (0);
 
@@ -41,7 +41,7 @@ double *partial_sums;
 void
 usage()
 {
-	fprintf(stderr, "Usage: "PROG_NAME" [NUMBER OF THREADS]\n");
+	fprintf(stderr, "Usage: " PROG_NAME " [NUMBER OF THREADS]\n");
 	exit(EXIT_FAILURE);
 }
 
@@ -83,7 +83,7 @@ main(int argc, char *argv[])
 	pthread_t *ptid;
 	/* Final summed value of all work done between threads */
 	double sum = 0.0;
-	clock_t start, stop;
+	struct timespec start, stop;
 
 	if (argc !=2)
 		usage();
@@ -91,8 +91,8 @@ main(int argc, char *argv[])
 	if (n <= 0)
 		EPRINT("Less than 0 child threads requested\n")
 	/* Allocate according to the number of threads requested */
-	ptid = malloc(sizeof(*ptid) * n);
-	partial_sums = malloc(sizeof(*partial_sums) * n);
+	ptid = (pthread_t *)malloc(sizeof(*ptid) * n);
+	partial_sums = (double *)malloc(sizeof(*partial_sums) * n);
 	chunk = INTERVALS / n;
 	split = INTERVALS % n;
 	if (0 == split) {
@@ -100,7 +100,7 @@ main(int argc, char *argv[])
 		chunk -= 1;
 	}
 	/* Start the timer */
-	start = clock();
+	clock_gettime(CLOCK_MONOTONIC, &start);
 	for (i = 0; i < n; ++i) {
 		if (pthread_create(&ptid[i], NULL, work, (void *) i) != 0)
 			EPRINT("Could not create thread\n");
@@ -114,11 +114,12 @@ main(int argc, char *argv[])
 		}
 		sum += partial_sums[i];
 	}
-	sum *= 1.0/INTERVALS;
+	sum *= 1.0 / INTERVALS;
 	/* End the timer */
-	stop = clock();
+	clock_gettime(CLOCK_MONOTONIC, &stop);
 	/* Print out total runtime of algorithm */
-	printf("%f\n", (double)(stop - start) / CLOCKS_PER_SEC);
+	printf("%f\n", (double) (stop.tv_nsec - start.tv_nsec) / 1000000000 +
+			(double) (stop.tv_sec - start.tv_sec));
 	//printf ("Estimation of pi is %14.12f\n", sum);
 	return 0;
 }

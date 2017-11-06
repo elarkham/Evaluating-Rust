@@ -11,5 +11,5 @@ MANPREFIX := $(PREFIX)/man
 LDFLAGS :=
 
 # C Compiler settings
-CC := cc
-CFLAGS := -std=c99 -pedantic -O0 -Wall -Wextra
+CC := cc 
+CFLAGS := -std=gnu99 -pedantic -O0 -Wall -Wextra
