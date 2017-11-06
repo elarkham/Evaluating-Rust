@@ -1,0 +1,6 @@
+[package]
+name = "pi"
+version = "0.1.0"
+authors = ["Ethan Larkham <ethanlarkham@gmail.com>"]
+
+[dependencies]
