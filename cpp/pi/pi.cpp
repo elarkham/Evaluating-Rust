@@ -17,9 +17,9 @@
 
 #define PROG_NAME "pi"
 
-#define EPRINT(...) \
+#define EPRINT(x) \
 	do { \
-		fprintf(stderr, PROG_NAME ": error: " __VA_ARGS__); \
+		fprintf(stderr, PROG_NAME ": error: " x); \
 		exit(EXIT_FAILURE); \
 	} while (0);
 

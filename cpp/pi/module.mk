@@ -1,4 +1,4 @@
-SRC += pi.c
+SRC += pi.cpp
 TARGET += $(BUILD)/pi/pi
 LDFLAGS += -lpthread
 

@@ -12,10 +12,10 @@ BUILD=build
 # Include project modules
 include $(patsubst %, %/module.mk, $(MODULES))
 
-OBJ := $(patsubst %.c, $(BUILD)/%.o, $(filter %.c, $(SRC)))
+OBJ := $(patsubst %.cpp, $(BUILD)/%.o, $(filter %.cpp, $(SRC)))
 
 # Standard build
-$(BUILD)/%.o: %.c
+$(BUILD)/%.o: %.cpp
 	@printf "CC [R] $@\n"
 	@mkdir -p $(shell dirname $@)
 	@$(CC) $(CFLAGS) $(LDFLAGS) -c -o $@ $<
