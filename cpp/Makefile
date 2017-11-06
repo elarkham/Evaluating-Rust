@@ -18,8 +18,8 @@ OBJ := $(patsubst %.cpp, $(BUILD)/%.o, $(filter %.cpp, $(SRC)))
 $(BUILD)/%.o: %.cpp
 	@printf "CC [R] $@\n"
 	@mkdir -p $(shell dirname $@)
-	@$(CC) $(CFLAGS) $(LDFLAGS) -c -o $@ $<
-	@$(CC) $(CFLAGS) $(LDFLAGS) -S -o $(@:.o=.s) $<
+	@$(CC) $(CFLAGS) -c -o $@ $<
+	@$(CC) $(CFLAGS) -S -o $(@:.o=.s) $<
 
 # Standard targets
 all: options $(TARGET)

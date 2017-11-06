@@ -7,7 +7,6 @@
  *	Concurrently compute an approximation of pi.
  */
 
-#include <errno.h>
 #include <pthread.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -15,19 +14,22 @@
 #include <time.h>
 #include <unistd.h>
 
-#define PROG_NAME "pi"
+#include <vector>
+#include <iostream>
+
+std::string const PROG_NAME = "pi";
 
 #define EPRINT(x) \
 	do { \
-		fprintf(stderr, PROG_NAME ": error: " x); \
+		std::cerr << PROG_NAME << ": error: " << x << std::endl; \
 		exit(EXIT_FAILURE); \
-	} while (0);
+	} while (0)
 
 /* Number of intervals to divide the area beneath the curve in [0,1] into */
-#define INTERVALS 50000000
+size_t const INTERVALS = 50000000;
 
 // width of an interval
-#define WIDTH (1.0/INTERVALS)
+double const WIDTH = 1.0 / (double)INTERVALS;
 
 /* Number of intervals each thread will calculate */
 size_t chunk;
@@ -36,24 +38,24 @@ size_t chunk;
 size_t split;
 
 /* Child threads drop values of their interval calculation into the array */
-double *partial_sums;
+std::vector<double> partial_sums;
 
 void
 usage()
 {
-	fprintf(stderr, "Usage: " PROG_NAME " [NUMBER OF THREADS]\n");
+	std::cerr << "Usage: " << PROG_NAME << " [NUMBER OF THREADS]"
+		<< std::endl;
 	exit(EXIT_FAILURE);
 }
 
 void *
 work(void *in)
 {
-	size_t i;
 	size_t low;                 // first interval to be processed
 	size_t high;                // first interval *not* to be processed
-	double localSum = 0.0;   // sum for intervals being processed
-	double x;                // mid-point of an interval
 	size_t id = (size_t)in;
+	// sum for intervals being processed
+	double localSum = 0.0; 
 
 	if (id < split) {
 		low = (id * (chunk + 1));
@@ -62,8 +64,8 @@ work(void *in)
 		low = (split * (chunk + 1)) + ((id - split) * chunk);
 		high = low + chunk;
 	}
-	x = (low+0.5)*WIDTH;
-	for (i = low; i < high; i++) {
+	double x = (low+0.5)*WIDTH;
+	for (size_t i = low; i < high; i++) {
 		localSum += (4.0/(1.0+x*x));
 		x += WIDTH;
 	}
@@ -74,52 +76,46 @@ work(void *in)
 int
 main(int argc, char *argv[])
 {
-	size_t i;
-	/* Number of child threads to create. Note that the final approximation
-	 * of pi may be different depending on how many threads are used to do
-	 * floating point addition rounding. */
-	size_t n; 
 	/* Array for storing thread IDs */
-	pthread_t *ptid;
+	std::vector<pthread_t> ptid;
 	/* Final summed value of all work done between threads */
 	double sum = 0.0;
 	struct timespec start, stop;
 
 	if (argc !=2)
 		usage();
-	n = atoi(argv[1]);
+	/* Number of child threads to create. Note that the final approximation
+	 * of pi may be different depending on how many threads are used to do
+	 * floating point addition rounding. */
+	size_t const n = atoi(argv[1]);
 	if (n <= 0)
-		EPRINT("Less than 0 child threads requested\n")
-	/* Allocate according to the number of threads requested */
-	ptid = (pthread_t *)malloc(sizeof(*ptid) * n);
-	partial_sums = (double *)malloc(sizeof(*partial_sums) * n);
+		EPRINT("Less than 0 child threads requested");
+	ptid.reserve(n);
+	partial_sums.reserve(n);
 	chunk = INTERVALS / n;
 	split = INTERVALS % n;
 	if (0 == split) {
 		split = n;
 		chunk -= 1;
 	}
-	/* Start the timer */
+	/* Start the timer. Note this is wallclock time, not CPU time. */
 	clock_gettime(CLOCK_MONOTONIC, &start);
-	for (i = 0; i < n; ++i) {
+	for (size_t i = 0; i < n; ++i) {
 		if (pthread_create(&ptid[i], NULL, work, (void *) i) != 0)
-			EPRINT("Could not create thread\n");
+			EPRINT("Could not create thread");
 	}
 	/* Wait for each thread to finish */
-	for (i = 0; i < n; ++i)
-	{
+	for (size_t i = 0; i < n; ++i) {
 		if (pthread_join(ptid[i], NULL))
-		{
-			EPRINT("Could not join thread\n");
-		}
+			EPRINT("Could not join thread");
 		sum += partial_sums[i];
 	}
 	sum *= 1.0 / INTERVALS;
 	/* End the timer */
 	clock_gettime(CLOCK_MONOTONIC, &stop);
 	/* Print out total runtime of algorithm */
-	printf("%f\n", (double) (stop.tv_nsec - start.tv_nsec) / 1000000000 +
-			(double) (stop.tv_sec - start.tv_sec));
-	//printf ("Estimation of pi is %14.12f\n", sum);
+	std::cout << (double) (stop.tv_nsec - start.tv_nsec) / 1000000000 +
+			(double) (stop.tv_sec - start.tv_sec) << std::endl;
+	std::cerr << "Estimation of pi is " << sum << std::endl;
 	return 0;
 }
