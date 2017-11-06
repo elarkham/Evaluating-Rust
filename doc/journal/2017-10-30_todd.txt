@@ -1,0 +1,7 @@
+The C++ pi implementation is completed to a degree that will allow Ethan to
+begin implementing the Rust version in a similar way. I plan on adding memory
+usage and caching introspection to the pi implementation as Ethan begins
+working on the Rust version.
+
+Along with implmenting the pi program, I will be looking into revising a
+script I once wrote that can graph our data points.

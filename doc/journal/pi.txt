@@ -7,3 +7,11 @@
 	to use global variables like Hatcher did with the threads. This is a
 	flaw with the design of the pthreads library, which makes writing
 	threaded applications with it harder.
+
+2017-10-30
+	Due to a misunderstanding of the pi code, I reverted the changes I
+	made on the 24th and instead cleaned up the code a bit to suite my
+	style and will add more parameterization through commandline flags.
+	One note about C++ (and C) pthreads is that the API of having only a
+	single void * argument to a thread makes it more complex to pass in
+	more than a single pointer-sized value to a thread.
