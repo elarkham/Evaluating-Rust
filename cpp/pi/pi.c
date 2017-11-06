@@ -72,7 +72,7 @@ work(void *in)
 }
 
 int
-main (int argc, char *argv[])
+main(int argc, char *argv[])
 {
 	size_t i;
 	/* Number of child threads to create. Note that the final approximation

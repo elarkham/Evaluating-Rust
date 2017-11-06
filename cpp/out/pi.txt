@@ -1,0 +1,48 @@
+Estimation of pi is 3.141592654030
+Estimation of pi is 3.141592653812
+Estimation of pi is 3.141592653744
+Estimation of pi is 3.141592653709
+Estimation of pi is 3.141592653688
+Estimation of pi is 3.141592653673
+Estimation of pi is 3.141592653662
+Estimation of pi is 3.141592653654
+Estimation of pi is 3.141592653646
+Estimation of pi is 3.141592653640
+Estimation of pi is 3.141592653635
+Estimation of pi is 3.141592653632
+Estimation of pi is 3.141592653628
+Estimation of pi is 3.141592653626
+Estimation of pi is 3.141592653624
+Estimation of pi is 3.141592653622
+Estimation of pi is 3.141592653620
+Estimation of pi is 3.141592653618
+Estimation of pi is 3.141592653616
+Estimation of pi is 3.141592653615
+Estimation of pi is 3.141592653614
+Estimation of pi is 3.141592653613
+Estimation of pi is 3.141592653612
+Estimation of pi is 3.141592653611
+0.420767
+0.420267
+0.420047
+0.420361
+0.418702
+0.418734
+0.417346
+0.417735
+0.416198
+0.418894
+0.417046
+0.418037
+0.416768
+0.419468
+0.414992
+0.416879
+0.414867
+0.415298
+0.415287
+0.417467
+0.413529
+0.415315
+0.414639
+0.411661
