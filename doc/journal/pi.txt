@@ -15,3 +15,11 @@
 	One note about C++ (and C) pthreads is that the API of having only a
 	single void * argument to a thread makes it more complex to pass in
 	more than a single pointer-sized value to a thread.
+
+2017-10-07
+	Updated to the pi codebase to be more C++ like, using lists and
+	std::cout instead. I found while doing this I remebered how I
+	greatly dislike C++'s std::cout syntax, as it creates very long
+	segmented strings that are harder to grep for. Other than that it
+	is still really similar to the original C implementation, and is not
+	fully representative of what it is like to code in C++.

@@ -1,0 +1,9 @@
+Wasn't able to work much on the project this week. Instead I was researching
+different ways to benchmark analysis and if rust supported them. So far I've
+found the following tools/methods in no particular order:
+	- gprof
+	- operf
+	- using CPU wallclock timers in the code
+	- valgrind (works with rust)
+	- clang++ llvm vs rustc llvm
+	- rustc x86-64 asm vs g++ x86-64 asm
