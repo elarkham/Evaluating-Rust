@@ -1,0 +1,51 @@
+\documentclass[10pt,a4paper]{report}
+\usepackage[top=1in, left=0.5in, right=0.5in, bottom=1.5in]{geometry}
+\usepackage{titlesec}
+\usepackage{tabulary}
+\usepackage{tabularx}
+
+\pagenumbering{gobble}
+\begin{document}
+% Title
+\begin{center}
+	{\Large Design and Analysis: {\bfseries Rust Evaluation}}
+	- {\large{\itshape Ethan Larkham} and {\itshape Todd Gaunt}}
+	- {\large October 13, 2017}
+\end{center}
+\vspace{0.5em}
+\paragraph{Overview of Problem}
+This project aims to compare differences between languages fairly
+and display the results in a format that is easily understood while avoiding
+any statisitcal pitfalls.
+\paragraph{Reason for the project}
+%TODO
+\paragraph{High Level Design}
+The end product of this project will be a research paper, a poster, and a
+project repository containing all of the code used to gather the for the report
+that anyone can access to reproduce the results. The report contain a detailed
+write-up on the differences found between performance benchmarks, differences
+between generated assembler, and the subjective report on language ergonomics.
+As an aid to the report, the poster will have the most interesting performance
+graphs displayed in larger detail, but will omit most of the subjective
+language details and won't contain any assembler analysis (due to it not being
+graphic in nature).
+\paragraph{Desgin Details}
+\begin{flushleft}
+	\begin{itemize}
+		\item the project will consist of many small programs, not a
+			single large one.
+		\item clang++ and rustc are the main compilers to compare since
+			they both produce llvm, g++ is secondary but will be a
+			good control
+		\item pthreads instead of C++ threads are being used
+	\end{itemize}
+\end{flushleft}
+\paragraph{Current Backlog}
+%TODO
+\paragraph{Sprint Analysis}
+%TODO
+\paragraph{Review of team performance}
+%TODO
+\paragraph{Changes for second semester}
+%TODO
+\end{document}
