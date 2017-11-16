@@ -13,12 +13,16 @@
 	- {\large October 13, 2017}
 \end{center}
 \vspace{0.5em}
-\paragraph{Overview of Problem}
+\paragraph{Overview Of Problem}
 This project aims to compare differences between languages fairly
 and display the results in a format that is easily understood while avoiding
 any statisitcal pitfalls.
-\paragraph{Reason for the project}
-%TODO
+\paragraph{Reason For The Project}
+Since rust is a new programming language that touts its "fearless" concurrency,
+we will be comparing and analysing how rust handles concurrency in contrast
+with its more dominant competitor C++, using pthreads as its concurrency method.
+The hope is that by the end of this project, the direct advantages of rust's
+model over competitors will be brought to better light.
 \paragraph{High Level Design}
 The end product of this project will be a research paper, a poster, and a
 project repository containing all of the code used to gather the for the report
@@ -32,20 +36,26 @@ graphic in nature).
 \paragraph{Desgin Details}
 \begin{flushleft}
 	\begin{itemize}
-		\item the project will consist of many small programs, not a
-			single large one.
-		\item clang++ and rustc are the main compilers to compare since
-			they both produce llvm, g++ is secondary but will be a
-			good control
-		\item pthreads instead of C++ threads are being used
+		\item The project will consist of many small functionally
+      identical programs implemented in both rust and C++.
+    \item Analysis of the two languages will primarily be done using clang++
+      and rustc since both produce llvm, g++ will be used secondarily and
+      treated as a control.
+		\item C++ implementations will use pthreads instead of the native C++
+      threads.
 	\end{itemize}
 \end{flushleft}
 \paragraph{Current Backlog}
-%TODO
+\begin{flushleft}
+	\begin{itemize}
+		\item C++/Rust Jacobi Implementation and Analysis.
+		\item C++/Rust Concurrent Hash Table Implementation and Analysis.
+	\end{itemize}
+\end{flushleft}
 \paragraph{Sprint Analysis}
 %TODO
-\paragraph{Review of team performance}
+\paragraph{Review Of Team Performance}
 %TODO
-\paragraph{Changes for second semester}
+\paragraph{Changes For Second Semester}
 %TODO
 \end{document}
