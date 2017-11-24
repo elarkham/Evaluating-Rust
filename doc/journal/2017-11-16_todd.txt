@@ -1,0 +1,4 @@
+Ethan and I finished the first draft of the report document and the writing
+plan. For the next sprint that takes place over Thanksgiving break, we plan on
+setting up the test server and discussing with Hatcher how to implement
+concurrent Jacobi in Rust.

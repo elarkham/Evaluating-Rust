@@ -1,0 +1,9 @@
+Attendees: Ethan Larkham and Todd Gaunt
+
+We discussed our plans to setup the server for testing over break, and how the
+Rust version ofjacobi would be implemented. We also shared that we made the
+first draft of the report document.
+
+Goals:
+	- Setup testing server
+	- Implement rust jacobi (perhaps in multiple ways)
