@@ -81,5 +81,5 @@ fn main() {
     let stop = PreciseTime::now();
 
     println!("{}", start.to(stop));
-    //println!("pi equals {}", sum);
+    eprintln!("pi equals {}", sum);
 }
