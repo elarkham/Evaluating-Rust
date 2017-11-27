@@ -1,0 +1,39 @@
+Refactoring this C++ program into a rust version seems pretty straightforward.
+The plan is to create a thread for each row of the simulation and to give that
+thread exclusive access to that row.
+
+Rust complains about leaving an array unititialized even when I am simply just
+assigning to it... to initialize it.
+
+It appears I have to zero intialized the arrays anyways, but llvm should
+hopefully be able to optimize it so that the zero initialization is skipped. I
+wonder why rust doesn't just zero initialize everything by default...
+
+Rust does not automatically coerce literal integes (such as '0' and '42') to
+floats or doubles when initializing a float or double, which is a little
+annoying.
+
+One thing I found really annoying about languages with methods in general is
+you never know where a function is going to be. Rust's absolute value function
+is a method of number types, when it used to be a seperate function (which
+outdated docs tell you to use).
+
+Rust array initialization and array declaration syntax is pretty bizzare
+(compared to C). Doesn't reflect the way in which they are accessed.
+
+2017-11-26: Just got my first segfault when writing rust code. It seems that
+allocating a 2d array of 1280x1280 on the stack causes a segfault.
+
+I might need to use scoped threads or ARC reference counting to solve this
+problem, as the two heap allocated grids apparently don't outlive main which
+the threads might. I need to use threads that only live as long as main.
+
+Rust does not have a stable API for scoped threads. The way to solve my above
+problem is to use a third party library called "crossbeam" instead, which
+isn't very good. In fact, they removed thread::scoped suddenly after 1.0
+released breaking any code that used it. Another other way is to use ARC even
+though it is just extra overhead. The last way is to just use unsafe Rust
+which isn't very impressive...
+
+I must use the cargo crossbeam crate to do it safely, otherwise I'll have to
+use unsafe...
