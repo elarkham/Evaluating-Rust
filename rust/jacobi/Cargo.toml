@@ -5,3 +5,4 @@ authors = ["Todd Gaunt <toddgaunt@protonmail.ch>"]
 
 [dependencies]
 time = "*"
+crossbeam = "0.3.0"
