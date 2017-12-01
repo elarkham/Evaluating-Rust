@@ -1,0 +1,10 @@
+Attendees: Ethan Larkham and Todd Gaunt
+
+We discussed what we were able to get done over break. I configured my
+server to work as a testing environment and Todd mostly completed his jacobi
+implementation, but still needs to make some tweaks.
+
+Goals:
+	- Finish implementation of rust jacobi
+  - Start implementation of C++ jacobi
+  - Begin analyisis of pi programs
