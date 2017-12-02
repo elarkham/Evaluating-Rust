@@ -1,0 +1,5 @@
+Using a program I got from http://benchmarksgame.alioth.debian.org named
+"bencher" I configured my server for benchmarking. This involved creating
+custom startup scripts that will minimize the amount of potentially
+conflicting processes and installing + configuring bencher so that it will
+work with rust programs.

@@ -1,0 +1,4 @@
+Attendees: Ethan Larkham and Todd Gaunt
+
+Briefly reviewed different kinds of analysis we could preform on our
+implementations like reviewing the LLVM output.
