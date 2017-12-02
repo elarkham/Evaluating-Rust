@@ -80,6 +80,7 @@ fn main() {
     sum *= 1.0 / INTERVALS as f64;
     let stop = PreciseTime::now();
 
-    println!("{}", start.to(stop));
+    let elapsed = start.to(stop).to_string();
+    println!("{}", &elapsed[2..]);
     eprintln!("pi equals {}", sum);
 }
