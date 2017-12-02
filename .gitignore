@@ -11,6 +11,7 @@
 !*.tex
 !*.txt
 !*.sh
+!*.py
 !*.mk
 !*.odt
 !*.toml
