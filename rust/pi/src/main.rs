@@ -82,5 +82,5 @@ fn main() {
 
     let elapsed = start.to(stop).to_string();
     println!("{}", &elapsed[2..]);
-    eprintln!("pi equals {}", sum);
+    //eprintln!("pi equals {}", sum);
 }
