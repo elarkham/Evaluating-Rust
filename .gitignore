@@ -15,6 +15,7 @@
 !*.mk
 !*.odt
 !*.toml
+!*.odp
 
 # Whitelist specific filenames
 !*.gitignore
