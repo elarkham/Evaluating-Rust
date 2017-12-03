@@ -7,7 +7,7 @@ def mklist(filename):
     acc = []
     with open(filename, "r") as f:
         for line in f:
-            acc.append(float(line))
+            acc.append(float(line[:-3]))
     return acc
 
 if (len(sys.argv) != 3):
