@@ -37,3 +37,12 @@ which isn't very impressive...
 
 I must use the cargo crossbeam crate to do it safely, otherwise I'll have to
 use unsafe...
+
+--
+
+There are now three versions of jacobi in Rust to demonstrate how one might
+go about implementing the algorithm in Rust.
+
+1. Single-threaded version
+2. Rust standard library version (poor performance)
+3. Crossbeam 3rd-party library version (much better performance)
