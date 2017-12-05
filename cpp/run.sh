@@ -9,5 +9,5 @@ fi
 mkdir -p ${OUTPUT}
 touch ${OUTPUT}/$1.txt
 for i in {1..24}; do
-	./build/$1/$1 $i >> ${OUTPUT}/$1.txt
+	./build/$1/$1_O2 $i >> ${OUTPUT}/$1.txt
 done
