@@ -26,7 +26,7 @@ std::string const PROG_NAME = "pi";
 	} while (0)
 
 /* Number of intervals to divide the area beneath the curve in [0,1] into */
-size_t const INTERVALS = 50000000;
+size_t const INTERVALS = 500000000;
 
 // width of an interval
 double const WIDTH = 1.0 / (double)INTERVALS;
@@ -55,7 +55,7 @@ work(void *in)
 	size_t high;                // first interval *not* to be processed
 	size_t id = (size_t)in;
 	// sum for intervals being processed
-	double localSum = 0.0; 
+	double localSum = 0.0;
 
 	if (id < split) {
 		low = (id * (chunk + 1));
