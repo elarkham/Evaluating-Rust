@@ -4,7 +4,7 @@ include config.mk
 
 TARGET :=
 LDFLAGS :=
-MODULES := pi
+MODULES := pi jacobi
 SRC :=
 
 BUILD=build
@@ -13,6 +13,10 @@ BUILD=build
 include $(patsubst %, %/module.mk, $(MODULES))
 
 OBJ := $(patsubst %.cpp, $(BUILD)/%.o, $(filter %.cpp, $(SRC)))
+
+# Standard targets
+all: options $(TARGET)
+	echo $<
 
 # Standard build
 $(BUILD)/%_Os.o: %.cpp
@@ -27,9 +31,6 @@ $(BUILD)/%_O2.o: %.cpp
 	@mkdir -p $(shell dirname $@)
 	@$(CC) $(CFLAGS) -O2 -c -o $@ $<
 	@$(CC) $(CFLAGS) -O2 -S -o $(@:.o=.s) $<
-
-# Standard targets
-all: options $(TARGET)
 
 options: config.mk
 	@printf -- "build options:\n"
