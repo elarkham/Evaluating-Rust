@@ -10,16 +10,17 @@
  **	Using Pthreads.
  */
 
-//extern crate time;
+extern crate time;
 
 use std::thread;
-//use time::PreciseTime;
+use time::PreciseTime;
 
 const SIZE : usize = 1280;
 const TEMP : f64 = 50.0;
 const EPSILON : f64 = 0.1;
 
 fn main () {
+    let start = PreciseTime::now();
     let n_threads = 4;
     let split = SIZE / n_threads;
     let mut new : Vec<Vec<f64>> = vec![vec![0.0; SIZE]; SIZE];
@@ -116,6 +117,10 @@ fn main () {
             }
         }
     }
+    let stop = PreciseTime::now();
+
+    let elapsed = start.to(stop).to_string();
+    println!("{}", &elapsed[2..]);
     eprintln!("There are {} cells cooler than {} degrees",
               cool_cells,
               TEMP);
