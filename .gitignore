@@ -23,3 +23,6 @@
 !*README
 !*LICENSE
 !*Makefile
+
+# Overrides
+*/out/*
