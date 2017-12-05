@@ -4,7 +4,7 @@ include config.mk
 
 TARGET :=
 LDFLAGS :=
-MODULES := pi jacobi
+MODULES := jacobi pi
 SRC :=
 
 BUILD=build
@@ -16,18 +16,18 @@ OBJ := $(patsubst %.cpp, $(BUILD)/%.o, $(filter %.cpp, $(SRC)))
 
 # Standard targets
 all: options $(TARGET)
-	echo $<
+	@echo $?
 
 # Standard build
 $(BUILD)/%_Os.o: %.cpp
-	@printf "CC [R] $@\n"
+	@printf "CC [Os] $@\n"
 	@mkdir -p $(shell dirname $@)
 	@$(CC) $(CFLAGS) -Os -c -o $@ $<
 	@$(CC) $(CFLAGS) -Os -S -o $(@:.o=.s) $<
 
 # Optimized build
 $(BUILD)/%_O2.o: %.cpp
-	@printf "CC [R] $@\n"
+	@printf "CC [O2] $@\n"
 	@mkdir -p $(shell dirname $@)
 	@$(CC) $(CFLAGS) -O2 -c -o $@ $<
 	@$(CC) $(CFLAGS) -O2 -S -o $(@:.o=.s) $<
