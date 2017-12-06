@@ -15,7 +15,7 @@ extern crate time;
 use time::PreciseTime;
 
 /* Number of intervals to divide the area beneath the curve in [0,1] into */
-const INTERVALS : usize = 500000000;
+const INTERVALS : usize = 50000000;
 
 /* Width of an interval */
 const WIDTH: f64 = 1.0 / INTERVALS as f64;

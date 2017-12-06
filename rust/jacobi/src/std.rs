@@ -11,8 +11,8 @@
  */
 
 extern crate time;
-extern crate crossbeam;
 
+use std::thread;
 use time::PreciseTime;
 use std::env;
 use std::process;
@@ -55,61 +55,68 @@ fn main () {
     }
 
     loop {
+        let mut children = vec![];
+        for id in 0..n_threads {
+            let old = old.clone();
+            let mut new = new.clone();
+            children.push(thread::spawn(move || {
+                let mut beg = id * split;
+                let mut end = beg + split;
+                if id == 0 {
+                    beg += 1;
+                }
+                if id == n_threads - 1 {
+                    end -= 1;
+                }
+                for i in beg..end {
+                    for j in 1..SIZE - 1 {
+                        new[i][j] = (old[i - 1][j]
+                                     + old[i + 1][j]
+                                     + old[i][j + 1]
+                                     + old[i][j - 1]) / 4.0;
+                    }
+                }
+                return new.clone();
+            }));
+        }
         let mut maxerr = 0.0;
-        /* Scope guarentees children die before references become stale */
-        crossbeam::scope(|scope| {
-            let mut children = vec![];
-            let mut slice = new.as_mut_slice();
-            for id in 0..n_threads {
-                let old = &old;
-                /* The braces around slice ar a hack to get Rust to not
-                 * reborrow slice */
-                let (rows, rest) = {slice}.split_at_mut(split);
-                children.push(scope.spawn(move || {
-                    let mut beg = id * split;
-                    let mut end = beg + split;
-                    if id == 0 {
-                        beg += 1;
-                    }
-                    if id == n_threads - 1 {
-                        end -= 1;
-                    }
-                    let mut maxerr = 0.0;
-                    for i in beg..end {
-                        for j in 1..SIZE - 1 {
-                            rows[i - id * split][j] = (old[i - 1][j]
-                                                       + old[i + 1][j]
-                                                       + old[i][j + 1]
-                                                       + old[i][j - 1]) / 4.0;
-                            let change = (old[i][j] - rows[i - id * split][j]).abs();
-                            if maxerr < change {
-                                maxerr =  change;
-                            }
-                        }
-                    }
-                    return maxerr;
-                }));
-                slice = rest;
+        let mut i = 0;
+        for child in children {
+            let rows = child.join().unwrap();
+            let mut beg = i * split;
+            let mut end = beg + split;
+            if i == 0 {
+                beg += 1;
+            } else if i == n_threads - 1 {
+                end -= 1;
             }
-            for child in children {
-                let tmp = child.join();
-                if maxerr < tmp {
-                    maxerr = tmp;
+            for j in beg..end {
+                for k in 1..SIZE - 1 {
+                    new[j][k] = rows[j][k];
                 }
             }
-        });
-        if EPSILON >= maxerr {
-            break;
+            i += 1;
         }
         /* Print-out for debugging */
         /*
-           for i in 0..SIZE {
-           for j in 0..SIZE {
-           print!("{} ", new[i][j]);
-           }
-           println!();
-           }
-           */
+        for i in 0..SIZE {
+            for j in 0..SIZE {
+                print!("{} ", new[i][j]);
+            }
+            println!();
+        }
+        */
+        for i in 1..SIZE - 1 {
+            for j in 1..SIZE - 1 {
+                let change = (old[i][j] - new[i][j]).abs();
+                if maxerr < change {
+                    maxerr =  change;
+                }
+            }
+        }
+        if EPSILON >= maxerr {
+            break;
+        }
         for i in 1..SIZE - 1 {
             for j in 1..SIZE - 1 {
                 old[i][j] = new[i][j];

@@ -34,8 +34,8 @@ std::string const PROG_NAME = "jacobi";
 #define TEMP    50.0
 #define EPSILON 0.1
 
-const size_t n_threads = 4;
-const double split = SIZE / n_threads;
+size_t n_threads;
+double split;
 
 double new_p[SIZE][SIZE];
 double old_p[SIZE][SIZE];
@@ -48,7 +48,8 @@ void* work(void* in)
 
   if (id == 0) {
     beg += 1;
-  } else if (id == (n_threads - 1)) {
+  }
+  if (id == (n_threads - 1)) {
     end -= 1;
   }
 
@@ -64,14 +65,33 @@ void* work(void* in)
 	return 0;
 }
 
+void usage()
+{
+	std::cerr << "Usage: " << PROG_NAME << " [NUMBER OF THREADS]"
+		<< std::endl;
+	exit(EXIT_FAILURE);
+}
+
 int main(int argc, char* argv[])
 {
+	struct timespec start, stop;
+
   double maxerr;
 	double change;
 	size_t i,j;
 	int cool_cells;
 
+  /* Get thread number from first argument */
+  if (argc !=2) {
+    usage();
+  }
+  n_threads = atoi(argv[1]);
+  if (n_threads <= 0)
+    EPRINT("Less than 0 child threads requested");
+  split = SIZE / n_threads;
+
   /* Array for storing thread IDs */
+	clock_gettime(CLOCK_MONOTONIC, &start);
   std::vector<pthread_t> ptid;
   ptid.reserve(n_threads);
 
@@ -139,6 +159,11 @@ int main(int argc, char* argv[])
 	for (i = 0; i < SIZE; i++)
 		for (j = 0; j < SIZE; j++)
 			if (new_p[i][j] < TEMP) cool_cells++;
+
+  /* end timer */
+	clock_gettime(CLOCK_MONOTONIC, &stop);
+	std::cout << (double) (stop.tv_nsec - start.tv_nsec) / 1000000000 +
+			(double) (stop.tv_sec - start.tv_sec) << std::endl;
 
 	printf ("There are %d cells cooler than %5.2f degrees\n",
 			cool_cells, TEMP);
