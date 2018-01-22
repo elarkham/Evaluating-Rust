@@ -6,6 +6,7 @@
 
 # Whitelist the following extensions
 !*.c
+!*.cpp
 !*.h
 !*.rs
 !*.tex
