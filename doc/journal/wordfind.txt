@@ -1,6 +1,0 @@
-2018-01-22
-	The C++ hashtable was pretty straightforward when programming the
-	non-generic version. There were quite a few errors when programming,
-	but the messages were helpful for figuring out my mistakes, nothing
-	too obnoxious. One things that is always obnoxious in both C and C++
-	is the need to differentiate between '.' and '->' for member access.
