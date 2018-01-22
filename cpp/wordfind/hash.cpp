@@ -49,11 +49,7 @@ HashTable::HashTable(size_t n)
 {
 	this->entry = (HashTable::Entry **)calloc(n, sizeof(*this->entry));
 	this->size = n;
-	this->mulock = (pthread_mutex_t *)malloc(sizeof(this->mulock) * LOCKCOUNT);
-	if (!this->mulock) {
-		printf("WHAT?\n");
-	}
-	exit(-1);
+	this->mulock = (pthread_mutex_t *)malloc(sizeof(*this->mulock) * LOCKCOUNT);
 	for (size_t i = 0; i < LOCKCOUNT; ++i)
 		if (pthread_mutex_init(&this->mulock[i], NULL))
 			eprint("Unable to initialize mutex.\n");
@@ -97,16 +93,16 @@ HashTable::Entry **
 HashTable::lookup(K key)
 {
 	HashTable::Entry **ep;
-	size_t index = hash(key) % this->size;
+	size_t n = hash(key);
 	
-	this->lock(index);
-	ep = &this->entry[index];
+	this->lock(n % LOCKCOUNT);
+	ep = &this->entry[n % this->size];
 	while (*ep) {
 		if (key == (*ep)->key)
 			return ep;
 		ep = &(*ep)->next;
 	}
-	this->unlock(index);
+	this->unlock(n % LOCKCOUNT);
 	return ep;
 }
 
@@ -135,5 +131,7 @@ main(int argc, char **argv)
 {
 	HashTable ht = HashTable(1000);
 	ht.insert("Hello", 10);
+	int ret = ht.find("Hello");
+	printf("%d\n", ret);
 	return 0;
 }
