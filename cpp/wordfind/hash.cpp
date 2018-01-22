@@ -9,6 +9,7 @@
 
 #include "hash.h"
 
+#define LOCKCOUNT 8
 #define K char *
 #define V size_t
 
@@ -48,6 +49,14 @@ HashTable::HashTable(size_t n)
 {
 	this->entry = (HashTable::Entry **)calloc(n, sizeof(*this->entry));
 	this->size = n;
+	this->mulock = (pthread_mutex_t *)malloc(sizeof(this->mulock) * LOCKCOUNT);
+	if (!this->mulock) {
+		printf("WHAT?\n");
+	}
+	exit(-1);
+	for (size_t i = 0; i < LOCKCOUNT; ++i)
+		if (pthread_mutex_init(&this->mulock[i], NULL))
+			eprint("Unable to initialize mutex.\n");
 }
 
 HashTable::~HashTable()
@@ -64,6 +73,7 @@ HashTable::~HashTable()
 		}
 	}
 	free(this->entry);
+	free(this->mulock);
 }
 
 
@@ -123,5 +133,7 @@ HashTable::find(K key)
 int 
 main(int argc, char **argv)
 {
+	HashTable ht = HashTable(1000);
+	ht.insert("Hello", 10);
 	return 0;
 }
