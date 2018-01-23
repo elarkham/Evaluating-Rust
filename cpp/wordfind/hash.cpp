@@ -45,6 +45,11 @@ hash(K key)
 	return hash;
 }
 
+HashTable::HashTable()
+{
+	HashTable(1000);
+}
+
 HashTable::HashTable(size_t n)
 {
 	this->entry = (HashTable::Entry **)calloc(n, sizeof(*this->entry));
@@ -118,12 +123,12 @@ HashTable::insert(K key, V value)
 	(*epp)->value = value;
 }
 
-V
+V *
 HashTable::find(K key)
 {
 	Entry **epp = this->lookup(key);
 
-	return (*epp)->value;
+	return &(*epp)->value;
 }
 
 int 
@@ -131,7 +136,7 @@ main(int argc, char **argv)
 {
 	HashTable ht = HashTable(1000);
 	ht.insert("Hello", 10);
-	int ret = ht.find("Hello");
-	printf("%d\n", ret);
+	size_t ret = *ht.find("Hello");
+	printf("%zu\n", ret);
 	return 0;
 }

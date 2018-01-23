@@ -4,11 +4,12 @@
 
 class HashTable {
 	public:
+		HashTable();
 		HashTable(size_t n);
 		~HashTable();
 
 		void insert(K key, V data);
-		V find(K key);
+		V *find(K key);
 	private:
 		struct Entry {
 			K key;
