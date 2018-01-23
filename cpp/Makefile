@@ -4,10 +4,10 @@ include config.mk
 
 TARGET :=
 LDFLAGS :=
-MODULES := jacobi pi
+MODULES := jacobi pi wordfind
 SRC :=
 
-BUILD=build
+BUILD = build
 
 # Include project modules
 include $(patsubst %, %/module.mk, $(MODULES))
