@@ -21,7 +21,7 @@
 #define MIN_WORD 6
 
 static void
-eprint(char *fmt, ...)
+eprint(const char *fmt, ...)
 {
 	va_list ap;
 
@@ -74,7 +74,7 @@ void *
 findwords(void *vargs)
 {
 	FILE *fp;
-	int buflen;
+	size_t buflen;
 	char buf[MAX_WORD + 1];
 	struct findwords_args *args = (struct findwords_args *)vargs;
 
@@ -104,7 +104,7 @@ findwords(void *vargs)
 // Iterates through the given hash table and tries to find a word that is both
 // the longest and hask the same bitmask as the integer 'n'.
 const char *
-find_largest(HashTable *wordtab, int n)
+find_largest(HashTable *wordtab, size_t n)
 {
 	void *data;
 	void *iter;
@@ -114,7 +114,7 @@ find_largest(HashTable *wordtab, int n)
 
 	// Find what the perfect bitmask is.
 	maxmask = 0;
-	for (int i=0; i<n; ++i) {
+	for (size_t i = 0; i < n; ++i) {
 		maxmask |= 1 << i;
 	}
 #if 0

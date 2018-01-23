@@ -8,11 +8,11 @@ class HashTable {
 		HashTable(size_t n);
 		~HashTable();
 
-		void insert(K key, V data);
-		V *find(K key);
+		void insert(const K key, V data);
+		V *find(const K key);
 	private:
 		struct Entry {
-			K key;
+			const K key;
 			V value;
 			Entry *next;
 		};
@@ -22,6 +22,6 @@ class HashTable {
 		Entry **entry;
 
 		void lock(size_t);
-		Entry **lookup(K);
+		Entry **lookup(const K);
 		void unlock(size_t);
 };

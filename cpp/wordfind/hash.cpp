@@ -14,7 +14,7 @@
 #define V size_t
 
 static void
-eprint(char *fmt, ...)
+eprint(const char *fmt, ...)
 {
 	va_list ap;
 
@@ -29,7 +29,7 @@ eprint(char *fmt, ...)
 
 // Compute a hash for the symbol table.
 static unsigned int
-hash(K key)
+hash(const K key)
 {
 	const unsigned int p = 16777619;
 	unsigned int hash = 2166136261u;
@@ -95,7 +95,7 @@ HashTable::unlock(size_t index)
 }
 
 HashTable::Entry **
-HashTable::lookup(K key)
+HashTable::lookup(const K key)
 {
 	HashTable::Entry **ep;
 	size_t n = hash(key);
@@ -112,7 +112,7 @@ HashTable::lookup(K key)
 }
 
 void
-HashTable::insert(K key, V value)
+HashTable::insert(const K key, V value)
 {
 	HashTable::Entry **epp = this->lookup(key);
 
@@ -124,19 +124,9 @@ HashTable::insert(K key, V value)
 }
 
 V *
-HashTable::find(K key)
+HashTable::find(const K key)
 {
 	Entry **epp = this->lookup(key);
 
 	return &(*epp)->value;
-}
-
-int 
-main(int argc, char **argv)
-{
-	HashTable ht = HashTable(1000);
-	ht.insert("Hello", 10);
-	size_t ret = *ht.find("Hello");
-	printf("%zu\n", ret);
-	return 0;
 }
