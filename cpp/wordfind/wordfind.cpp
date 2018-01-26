@@ -16,7 +16,7 @@
 
 #define PRGM_NAME "prog4"
 
-#define MAX_ARG 32
+#define MAX_ARG 64
 #define MAX_WORD 50
 #define MIN_WORD 6
 
@@ -53,8 +53,9 @@ getword(char *buf, size_t *buflen, size_t maxsize, FILE *fp)
 	*buflen = 0;
 	do {
 		c = getc(fp);
-		if (EOF == c)
+		if (EOF == c) {
 			return NULL;
+		}
 	} while (!isalpha(c));
 
 	while (isalpha(c)) {
@@ -66,6 +67,12 @@ getword(char *buf, size_t *buflen, size_t maxsize, FILE *fp)
 	}
 	buf[*buflen] = '\0';
 	return buf;
+}
+
+void
+update_book(size_t *mask, void *arg)
+{
+	*mask |= (1 << ((struct findwords_args *)arg)->id);
 }
 
 // This function is used by worker threads to scan through a file for long
@@ -92,7 +99,7 @@ findwords(void *vargs)
 			/* The files the word appears in is kept track of
 			 * through a bitmask, since the number of files this
 			 * program processes is limited */
-			*(args->wordtab.find(buf)) |= (1 << args->id);
+			args->wordtab.update(buf, update_book, args);
 		}
 	}
 
@@ -106,45 +113,45 @@ findwords(void *vargs)
 const char *
 find_largest(HashTable *wordtab, size_t n)
 {
-	void *data;
-	void *iter;
-	const char *entry;
+	const char *key;
+	size_t value;
 	const char *longest = "";
-	uintptr_t maxmask, mask;
+	size_t maxmask, mask;
 
 	// Find what the perfect bitmask is.
 	maxmask = 0;
 	for (size_t i = 0; i < n; ++i) {
 		maxmask |= 1 << i;
 	}
-#if 0
 	// Find the largest word with the hash-table iterator.
-	iter = symtabCreateIterator(wordtab);
-	entry = symtabNext(iter, &data);
+	HashTable::Iterator iter = wordtab->begin();
+	key = *iter.get_key();
+	value = *iter.get_value();
 	longest = NULL;
-	while(entry) {
-		mask = (uintptr_t) data;
+	for (;;) {
+		mask = value;
 
 		// Potential match
 		if (maxmask == mask) {
 			if (!longest) {
-				longest = entry;
+				longest = key;
 			} else {
-				int len = strlen(longest) - strlen(entry);
+				int len = strlen(longest) - strlen(key);
 				if (0 > len) {
-					longest = entry;
+					longest = key;
 				} else if (0 == len) {
-					if (0 < strcmp(longest, entry))
-						longest = entry;
+					if (0 < strcmp(longest, key))
+						longest = key;
 				}
 			}
 		}
-
-		entry = symtabNext(iter, &data);
-	}
-	symtabDeleteIterator(iter);
-#endif
-
+		if (iter.next()) {
+			key = *iter.get_key();
+			value = *iter.get_value();
+		} else {
+			break;
+		}
+	};
 	return longest;
 }
 
@@ -162,24 +169,23 @@ main(int argc, char **argv)
 		eprint("Maximum file limit (%zu) reached.\n", MAX_ARG);
 	}
 
-	HashTable wordtab = HashTable(1000);
+	HashTable wordtab = HashTable(10000);
 
 	/* Dispatch 1 thread per file */
-	for (size_t i = 0; i < filecnt; ++i) {
+	for (i = 0; i < filecnt; ++i) {
 		/* Initialize the arguments */
 		ap[i].id = i;
 		ap[i].wordtab = wordtab;
 		ap[i].filepath = argv[i+1];
 
-		if (pthread_create(pt + i, NULL, findwords, &ap[i]))
+		if (pthread_create(&pt[i], NULL, findwords, &ap[i]))
 			eprint("Unable to create thread (%d).\n", i);
 	}
 	/* End all child threads */
-	for (size_t i = 0; i < filecnt; ++i) {
+	for (i = 0; i < filecnt; ++i) {
 		if (pthread_join(pt[i], NULL))
 			eprint("Unable to join thread (%d).\n", i);
 	}
-
 	const char *tmp = find_largest(&wordtab, filecnt);
 
 	if (tmp) {
@@ -187,4 +193,5 @@ main(int argc, char **argv)
 	} else {
 		putc('\n', stdout);
 	}
+	exit (-1);
 }

@@ -10,7 +10,7 @@
 #include "hash.h"
 
 #define LOCKCOUNT 8
-#define K char *
+#define K const char *
 #define V size_t
 
 static void
@@ -29,7 +29,7 @@ eprint(const char *fmt, ...)
 
 // Compute a hash for the symbol table.
 static unsigned int
-hash(const K key)
+hash(K key)
 {
 	const unsigned int p = 16777619;
 	unsigned int hash = 2166136261u;
@@ -94,39 +94,75 @@ HashTable::unlock(size_t index)
 		eprint("Unable to unlock mutex, halting.\n");
 }
 
-HashTable::Entry **
-HashTable::lookup(const K key)
+void
+HashTable::update(K key, void (*func)(V *, void *), void * arg)
 {
-	HashTable::Entry **ep;
-	size_t n = hash(key);
+	HashTable::Entry **epp;
+	size_t n = hash(key) % this->size;
 	
 	this->lock(n % LOCKCOUNT);
-	ep = &this->entry[n % this->size];
-	while (*ep) {
-		if (key == (*ep)->key)
-			return ep;
-		ep = &(*ep)->next;
+	epp = &this->entry[n];
+	while (*epp) {
+		if (0 == strcmp(key, (*epp)->key))
+			break;
+		epp = &(*epp)->next;
 	}
-	this->unlock(n % LOCKCOUNT);
-	return ep;
-}
-
-void
-HashTable::insert(const K key, V value)
-{
-	HashTable::Entry **epp = this->lookup(key);
 
 	if (!*epp) {
 		*epp = (HashTable::Entry *)calloc(1, sizeof(**epp));
 	}
-	(*epp)->key = key;
-	(*epp)->value = value;
+	(*epp)->key = strdup(key);
+	func(&(*epp)->value, arg);
+	this->unlock(n % LOCKCOUNT);
+}
+
+HashTable::Iterator
+HashTable::begin()
+{
+	size_t i;
+	HashTable::Iterator iter;
+	HashTable::Entry *ep = NULL;
+
+	for (i = 0; i < this->size; ++i) {
+		ep = this->entry[i];
+		if (ep)
+			break;
+	}
+	iter.tab = this;
+	iter.index = i;
+	iter.cur = ep;
+
+	return iter;
+}
+
+bool
+HashTable::Iterator::next()
+{
+	if (NULL == this->cur)
+		return false;
+	/* Attempt to traverse the bucket list */
+	this->cur = this->cur->next;
+	if (this->cur)
+		return true;
+	++this->index;
+	while (this->index < this->tab->size) {
+		this->cur = this->tab->entry[this->index];
+		if (this->cur)
+			return true;
+		++this->index;
+	}
+	this->cur = NULL;
+	return false;
+}
+
+K *
+HashTable::Iterator::get_key()
+{
+	return &this->cur->key;
 }
 
 V *
-HashTable::find(const K key)
+HashTable::Iterator::get_value()
 {
-	Entry **epp = this->lookup(key);
-
-	return &(*epp)->value;
+	return &this->cur->value;
 }
