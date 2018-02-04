@@ -165,8 +165,8 @@ int main(int argc, char* argv[])
 	std::cout << (double) (stop.tv_nsec - start.tv_nsec) / 1000000000 +
 			(double) (stop.tv_sec - start.tv_sec) << std::endl;
 
-	printf ("There are %d cells cooler than %5.2f degrees\n",
-			cool_cells, TEMP);
+	fprintf(stderr,
+      "There are %d cells cooler than %5.2f degrees\n", cool_cells, TEMP);
 
 	return 0;
 }
