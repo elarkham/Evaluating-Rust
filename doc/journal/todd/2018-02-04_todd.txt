@@ -1,0 +1,6 @@
+Implented the C++ version of the wordfind program. This program uses a
+concurrent hash table to find the largest word present in N files, where N is
+the number of files passed to the program.
+
+At the end of the week, we generated jacobi graph data and sent it to Hatcher
+for discussion during our next meeting.
