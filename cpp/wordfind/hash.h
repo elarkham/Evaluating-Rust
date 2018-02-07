@@ -8,11 +8,10 @@
 #define V size_t
 
 class HashTable {
-	private:
+	public:
 		struct Entry;
 	public:
-		HashTable();
-		HashTable(size_t n);
+		HashTable(size_t n = 1024);
 		~HashTable();
 
 		void update(K key, void (*func)(V *, void *), void *arg);
@@ -28,7 +27,7 @@ class HashTable {
 		};
 		Iterator begin();
 		Iterator end();
-	private:
+	public:
 		struct Entry {
 			K key;
 			V value;

@@ -42,7 +42,7 @@ void *findwords(void *vargs);
 /* Aguments for findwords() */
 struct findwords_args {
 	uintptr_t id;
-	HashTable wordtab;
+	HashTable *wordtab;
 	const char *filepath;
 };
 
@@ -100,7 +100,7 @@ findwords(void *vargs)
 			/* The files the word appears in is kept track of
 			 * through a bitmask, since the number of files this
 			 * program processes is limited */
-			args->wordtab.update(buf, update_book, args);
+			args->wordtab->update(buf, update_book, args);
 		}
 	}
 
@@ -171,7 +171,7 @@ main(int argc, char **argv)
 		eprint("Maximum file limit (%zu) reached.\n", MAX_ARG);
 	}
 
-	HashTable wordtab = HashTable(10000);
+	HashTable wordtab = HashTable();
 
 	/* Start the timer. Note this is wallclock time, not CPU time. */
 	clock_gettime(CLOCK_MONOTONIC, &start);
@@ -179,7 +179,7 @@ main(int argc, char **argv)
 	for (i = 0; i < filecnt; ++i) {
 		/* Initialize the arguments */
 		ap[i].id = i;
-		ap[i].wordtab = wordtab;
+		ap[i].wordtab = &wordtab;
 		ap[i].filepath = argv[i+1];
 
 		if (pthread_create(&pt[i], NULL, findwords, &ap[i]))

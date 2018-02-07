@@ -45,11 +45,6 @@ hash(K key)
 	return hash;
 }
 
-HashTable::HashTable()
-{
-	HashTable(1000);
-}
-
 HashTable::HashTable(size_t n)
 {
 	this->entry = (HashTable::Entry **)calloc(n, sizeof(*this->entry));
