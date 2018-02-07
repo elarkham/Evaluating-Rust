@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <iostream>
 
 #include "hash.h"
 
@@ -162,6 +163,7 @@ main(int argc, char **argv)
 	pthread_t pt[MAX_ARG];
 	struct findwords_args ap[MAX_ARG];
 	size_t filecnt = argc - 1;
+	struct timespec start, stop;
 
 	if (1 > filecnt) {
 		eprint("Need at least 1 file to analyze.\n");
@@ -171,6 +173,8 @@ main(int argc, char **argv)
 
 	HashTable wordtab = HashTable(10000);
 
+	/* Start the timer. Note this is wallclock time, not CPU time. */
+	clock_gettime(CLOCK_MONOTONIC, &start);
 	/* Dispatch 1 thread per file */
 	for (i = 0; i < filecnt; ++i) {
 		/* Initialize the arguments */
@@ -186,12 +190,15 @@ main(int argc, char **argv)
 		if (pthread_join(pt[i], NULL))
 			eprint("Unable to join thread (%d).\n", i);
 	}
-	const char *tmp = find_largest(&wordtab, filecnt);
 
-	if (tmp) {
-		printf("%s\n", tmp);
-	} else {
-		putc('\n', stdout);
-	}
-	exit (-1);
+	const char *tmp = find_largest(&wordtab, filecnt);
+	/* End the timer */
+	clock_gettime(CLOCK_MONOTONIC, &stop);
+
+	if (tmp)
+		std::cerr << tmp;
+	std::cerr << "\n";
+	std::cout << (double) (stop.tv_nsec - start.tv_nsec) / 1000000000 +
+			(double) (stop.tv_sec - start.tv_sec) << std::endl;
+	return 0;
 }
