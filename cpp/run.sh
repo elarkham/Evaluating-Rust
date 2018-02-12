@@ -8,6 +8,8 @@ if [ "" == "$1" ]; then
 fi
 mkdir -p ${OUTPUT}
 touch ${OUTPUT}/$1.txt
-for i in {1..24}; do
-	./build/$1/$1_Os $i >> ${OUTPUT}/$1.txt
+for i in {1..8}; do
+	for j in {1..16}; do
+		./build/$1/$1_O2 $j >> ${OUTPUT}/$1_$i.txt
+	done
 done
