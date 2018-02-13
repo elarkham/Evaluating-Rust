@@ -16,10 +16,9 @@ if (len(sys.argv) != 3):
 
 cpp = mklist(sys.argv[1])
 rust = mklist(sys.argv[2])
-#x_range = range(1, min(len(soa), len(aos)), 24)
-x_range = range(1,25)
+x_range = range(1, min(len(cpp), len(rust)) + 1)
 
-plt.xticks(range(1,25))
+plt.xticks(range(1, min(len(cpp), len(rust)) + 1))
 plt.plot(x_range, cpp, 'g--', x_range, rust, 'r--')
 plt.legend(['C++', 'Rust'])
 plt.ylabel("duration in seconds")
