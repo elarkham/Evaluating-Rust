@@ -30,7 +30,7 @@ cpp = []
 rust = []
 for i in range(0, n_samples):
     cpp.append(mklist(sys.argv[i + 2]))
-for i in range(0, n_samples):
+for i in range(n_samples, n_samples * 2):
     rust.append(mklist(sys.argv[i + 2]))
 print("ALL DATA")
 print(cpp)
