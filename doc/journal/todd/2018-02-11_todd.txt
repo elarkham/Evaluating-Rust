@@ -1,0 +1,11 @@
+goals for this week met:
+- Wrote the senior project abstract
+- Updated project run scripts to create data to be averaged, then average it.
+
+goals for this week not met:
+- Have not crearted new graphs with averaged data
+- Did not begin fourth program in Rust
+
+goals for next week:
+- Create graphs with averaged data
+- Begin fourth program in Rust
