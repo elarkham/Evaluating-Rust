@@ -7,7 +7,8 @@ if [ "" == "$1" ]; then
 	exit -1
 fi
 mkdir -p ${OUTPUT}
-touch ${OUTPUT}/$1.txt
-for i in {1..24}; do
-	./$1/target/release/$1 $i >> ${OUTPUT}/$1.txt
+for i in {1..8}; do
+	for j in {1..16}; do
+		./$1/target/release/$1 $j >> ${OUTPUT}/rust_$1_$i.txt
+	done
 done
