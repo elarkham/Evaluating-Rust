@@ -1,0 +1,51 @@
+#!/usr/bin/env python3
+
+import sys
+import matplotlib.pyplot as plt
+
+def mklist(filename):
+    acc = []
+    with open(filename, "r") as f:
+        for line in f:
+            acc.append(float(line[:-3]))
+    return acc
+
+def average_data(dataset):
+    avg_list = []
+    for i in range(0, len(dataset[0])):
+        avg = 0
+        for j in range(0, len(dataset)):
+            avg = avg + dataset[j][i]
+        avg = avg / len(dataset[0])
+        avg_list.append(avg)
+    return avg_list
+
+if (len(sys.argv) < 2):
+    print("usage: mkgraph n_samples (n * cpp) (n * rust)")
+    exit(-1)
+
+# Load Multiple datasets
+n_samples = int(sys.argv[1])
+cpp = []
+rust = []
+for i in range(0, n_samples):
+    cpp.append(mklist(sys.argv[i + 2]))
+for i in range(0, n_samples):
+    rust.append(mklist(sys.argv[i + 2]))
+print("ALL DATA")
+print(cpp)
+print(rust)
+# Average The datasets together
+avg_cpp = average_data(cpp)
+avg_rust = average_data(rust)
+print("AVERAGES")
+print(avg_cpp)
+print(avg_rust)
+x_range = range(1, min(len(avg_cpp), len(avg_rust)) + 1)
+
+plt.xticks(range(1, 15))
+plt.plot(x_range, avg_cpp, 'g--', x_range, avg_rust, 'r--')
+plt.legend(['C++', 'Rust'])
+plt.ylabel("duration in seconds")
+plt.xlabel("number of threads")
+plt.show()
