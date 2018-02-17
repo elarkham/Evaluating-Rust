@@ -17,7 +17,7 @@ use time::PreciseTime;
 use std::env;
 use std::process;
 
-const SIZE : usize = 1280;
+const SIZE : usize = 2560; //1280
 const TEMP : f64 = 50.0;
 const EPSILON : f64 = 0.1;
 
