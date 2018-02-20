@@ -1,0 +1,11 @@
+goals for this week met:
+- Create graphs with averaged data
+- Begin working on rust gaussian
+
+goals for this week not met:
+- None
+
+goals for next week:
+- Finish Rust gaussian
+- Make graphs for wordfind
+- Analyze pi llvm

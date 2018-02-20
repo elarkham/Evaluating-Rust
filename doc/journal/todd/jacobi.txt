@@ -46,3 +46,12 @@ go about implementing the algorithm in Rust.
 1. Single-threaded version
 2. Rust standard library version (poor performance)
 3. Crossbeam 3rd-party library version (much better performance)
+
+--
+
+2018-02-19
+
+I was getting strange results with compiling jacobi, single-threaded version.
+Even though I used a clean build, my binary was getting results of about ~7000
+cells cool. I then recompiled, without chaning my file from last compilation,
+and it began computing the correct result of 277836 cool cells. Weird
