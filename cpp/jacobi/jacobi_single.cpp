@@ -30,7 +30,7 @@ std::string const PROG_NAME = "jacobi";
 		exit(EXIT_FAILURE); \
 	} while (0)
 
-#define SIZE    5120
+#define SIZE    2560
 #define TEMP    50.0
 #define EPSILON 0.1
 
@@ -39,10 +39,13 @@ double old_p[SIZE][SIZE];
 
 int main()
 {
+	struct timespec start, stop;
 	double maxerr;
 	double change;
 	int   cool_cells;
 	int   i,j;
+
+	clock_gettime(CLOCK_MONOTONIC, &start);
 
 	/* north, east, and west boundaries */
 	for (i = 0; i < SIZE; i++)
@@ -89,7 +92,11 @@ int main()
 		for (j = 0; j < SIZE; j++)
 			if (new_p[i][j] < TEMP) cool_cells++;
 
-	printf ("There are %d cells cooler than %5.2f degrees\n",
+	clock_gettime(CLOCK_MONOTONIC, &stop);
+	std::cout << (double) (stop.tv_nsec - start.tv_nsec) / 1000000000 +
+		(double) (stop.tv_sec - start.tv_sec) << std::endl;
+
+	fprintf (stderr, "There are %d cells cooler than %5.2f degrees\n",
 			cool_cells, TEMP);
 
 	return 0;
