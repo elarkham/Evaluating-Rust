@@ -30,7 +30,7 @@ std::string const PROG_NAME = "jacobi";
 		exit(EXIT_FAILURE); \
 	} while (0)
 
-#define SIZE    1280
+#define SIZE    2560
 #define TEMP    50.0
 #define EPSILON 0.1
 
@@ -39,34 +39,34 @@ double old_p[SIZE][SIZE];
 
 int main(int argc, char* argv[])
 {
-  double maxerr;
+	double maxerr;
 	double change;
 	int   cool_cells;
 	int   i,j;
 
-  /* north, east, and west boundaries */
+	/* north, east, and west boundaries */
 	for (i = 0; i < SIZE; i++)
-  {
+	{
 		old_p[0][i] = new_p[0][i] = 0.0;
 		old_p[i][0] = new_p[i][0] = 0.0;
 		old_p[i][SIZE-1] = new_p[i][SIZE-1] = 0.0;
 	}
 
-  /* south boundary */
+	/* south boundary */
 	for (i = 1; i < SIZE-1; i++)
 	{
-    old_p[SIZE-1][i] = new_p[SIZE-1][i] = 100.0;
+		old_p[SIZE-1][i] = new_p[SIZE-1][i] = 100.0;
 	}
 
-  /* inner core */
+	/* inner core */
 	for (i = 1; i < SIZE-1; i++) {
-    for (j = 1; j < SIZE-1; j++) {
+		for (j = 1; j < SIZE-1; j++) {
 			new_p[i][j] = 50.0;
 			old_p[i][j] = 50.0;
 		}
 	}
 
-  /* Compute steady-state temperatures */
+	/* Compute steady-state temperatures */
 	do {
 		maxerr = 0.0;
 		for (i = 1; i < SIZE-1; i++)
