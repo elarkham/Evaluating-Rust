@@ -1,12 +1,14 @@
 Rust is a new programming language being developed by Mozilla, released in 2015
-aimed at system application developers. Many of its competitors such as C++ are
-not memory safe and are prone to security problems such buffer overflow
-exploits. Rust aims to resolve these issues as a completely new language by
-enforcing a strict emphasis on memory safety and program correctness during
+aimed at system application developers. Rust aims to be a completely safe
+language enforcing strict compiler rules for memory safety and program correctness during
 compile time rather than run time, while maintaining competitive performance.
-The goal of Rust to reduce security problems while maintaining comparable
-performance with C++ in concurrent programs will be the primary subject of this
-project. In order to do this, the two members of the Evaluating Rust team have
-implemented four programs twice, once in Rust and again in C++. Each language
-has been analyzed with regards to performance and usability utilzing these
-four programs.
+Many of its competitors such as C++ are not memory safe and are prone to security
+problems such buffer overflow exploits. 
+This project evaluated Rust as language with regard to its performance, usability,
+and safety. Over the course of the past two semester, our team implemented
+four programs twice, once in C++ and Rust. Each team-member alternated the
+language they were using for each program, and kept journals of how easy it
+was to write each program, and if and kept journals of how easy it was to
+write each program, and if rust helped them catch errors. Alongside this
+subjective analysis, we benchmarked each program for performance, and reveal
+why each language performs the way it does.
