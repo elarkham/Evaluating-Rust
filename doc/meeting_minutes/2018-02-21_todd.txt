@@ -1,0 +1,10 @@
+Attendance: Both Ethan and I were present.
+
+We met with hatcher and discussion the new averaged graphs. Regarding jacobi,
+Hatcher seemed interested in exploring even just the single-threaded versions
+of each program in Rust and C++.
+
+We brought up the poor performance of the C++ jacobi, and we believe it may be
+due to the threads being created and destroyed each iteration of the program,
+so we are going to try to see if we can rewrite both the C++ and Rust version
+to keep the threads around for each iteration.
