@@ -1,0 +1,5 @@
+Me and Todd reran the benchmarks for our pi and jacobi programs. Prior our
+data was just based on 1 run vs 1 run, now it compares the averages of
+multiple runs instead. Todd also fixed some bugs with the jacobi rust program
+that helped smooth out its test results a bit, so retesting for that was
+needed anyway.
