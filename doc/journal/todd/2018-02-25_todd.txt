@@ -1,0 +1,18 @@
+
+goals not met for this week
+- Generate wordfind graphs (Ethan has still not finished his wordfind
+  implementation in Rust).
+- Analyze pi llvm. The jacobi performance has taken priority, so I began
+  analyzing it instead.
+- Multi-threaded guassian was not completed, was only able to complete
+  single-threaded implementation
+
+goals met for this week:
+- Finished Rust gaussian single-threaded
+
+goals for next week:
+- Rust gaussian multi-threaded
+- Jacobi semaphore
+- Compare performance of jacobi semaphore with jacobi pthread.join()
+- See if jacobi grid is contiguous memory in Rust, or if there are any other
+  bottlenecks making it slower than C++

@@ -1,0 +1,10 @@
+Attendance: Todd was present.
+
+Ethan was unable to make it today, so I updated Hatcher on what the current
+progress with rust gaussian was. I implemented rust gaussian as a
+single-threaded program in rust before implementing it concurrently, and the
+cocurrent version, along with a semaphore version of C++ jacobi, are goals to
+be completed this week.
+
+One suspicion for why the Rust version of jacobi may perform worse is the use
+of Vec<T> rather than a primitive array type.
