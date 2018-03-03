@@ -30,7 +30,7 @@ std::string const PROG_NAME = "jacobi";
 		exit(EXIT_FAILURE); \
 	} while (0)
 
-#define SIZE    2560
+#define SIZE    1024
 #define TEMP    50.0
 #define EPSILON 0.1
 

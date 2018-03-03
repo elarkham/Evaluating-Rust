@@ -33,7 +33,7 @@ sem_t sem_stop;
 		exit(EXIT_FAILURE); \
 	} while (0)
 
-#define SIZE    5120
+#define SIZE    1024
 #define TEMP    50.0
 #define EPSILON 0.1
 
@@ -128,6 +128,10 @@ int main(int argc, char* argv[])
 			old_p[i][j] = 50.0;
 		}
 	}
+
+	/* Initialize semaphores */
+	sem_init(&sem_start, 0, 0);
+	sem_init(&sem_stop, 0, 0);
 
 	/* Compute steady-state temperatures */
 	do {
