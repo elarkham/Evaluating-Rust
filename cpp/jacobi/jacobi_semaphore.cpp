@@ -26,6 +26,7 @@
 char const *argv0;
 sem_t sem_start;
 sem_t sem_stop;
+sem_t sem_hold;
 
 #define EPRINT(x) \
 	do { \
@@ -33,7 +34,7 @@ sem_t sem_stop;
 		exit(EXIT_FAILURE); \
 	} while (0)
 
-#define SIZE    1024
+#define SIZE    1280
 #define TEMP    50.0
 #define EPSILON 0.1
 
@@ -49,24 +50,25 @@ void* work(void* in)
 	size_t beg = id * split;
 	size_t end = beg + split;
 
-	sem_wait(&sem_start);
-	if (id == 0) {
-		beg += 1;
-	}
-	if (id == (n_threads - 1)) {
-		end -= 1;
-	}
+	while (1) {
+		sem_wait(&sem_start);
+		if (id == 0)
+			beg += 1;
+		if (id == (n_threads - 1))
+			end -= 1;
 
-	for (size_t i = beg; i < end; i++) {
-		for (size_t j = 1; j < SIZE; j++) {
-			new_p[i][j] = ( old_p[i-1][j]
-					+ old_p[i+1][j]
-					+ old_p[i][j+1]
-					+ old_p[i][j-1] ) / 4.0;
+		for (size_t i = beg; i < end; i++) {
+			for (size_t j = 1; j < SIZE; j++) {
+				new_p[i][j] = ( old_p[i-1][j]
+						+ old_p[i+1][j]
+						+ old_p[i][j+1]
+						+ old_p[i][j-1] ) / 4.0;
+			}
 		}
+		sem_post(&sem_stop);
+		sem_wait(&sem_hold);
 	}
-	sem_post(&sem_stop);
-
+	
 	return 0;
 }
 
@@ -102,11 +104,6 @@ int main(int argc, char* argv[])
 	std::vector<pthread_t> ptid;
 	ptid.reserve(n_threads);
 
-	for (i = 0; i < n_threads; i++) {
-		if (pthread_create(&ptid[i], NULL, work, (void *) i) != 0)
-			EPRINT("Could not create thread");
-	}
-
 	/* north, east, and west boundaries */
 	for (i = 0; i < SIZE; i++)
 	{
@@ -132,6 +129,13 @@ int main(int argc, char* argv[])
 	/* Initialize semaphores */
 	sem_init(&sem_start, 0, 0);
 	sem_init(&sem_stop, 0, 0);
+	sem_init(&sem_hold, 0, 0);
+
+	/* delegate work to threads */
+	for(i = 0; i < n_threads; i++) {
+		if(pthread_create(&ptid[i], NULL, work, (void *) i) != 0)
+			EPRINT("Could not create thread");
+	}
 
 	/* Compute steady-state temperatures */
 	do {
@@ -142,7 +146,9 @@ int main(int argc, char* argv[])
 		for (size_t i = 0; i < n_threads; ++i) {
 			sem_wait(&sem_stop);
 		}
-
+		for (size_t i = 0; i < n_threads; ++i) {
+			sem_post(&sem_hold);
+		}
 		/* update maxerr */
 		maxerr = 0.0;
 		for (i = 1; i < SIZE-1; i++) {
