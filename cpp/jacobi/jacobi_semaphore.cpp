@@ -49,13 +49,13 @@ void* work(void* in)
 	size_t id  = (size_t)in;
 	size_t beg = id * split;
 	size_t end = beg + split;
+	if (id == 0)
+		beg += 1;
+	if (id == (n_threads - 1))
+		end -= 1;
 
 	while (1) {
 		sem_wait(&sem_start);
-		if (id == 0)
-			beg += 1;
-		if (id == (n_threads - 1))
-			end -= 1;
 
 		for (size_t i = beg; i < end; i++) {
 			for (size_t j = 1; j < SIZE; j++) {
@@ -132,7 +132,7 @@ int main(int argc, char* argv[])
 	sem_init(&sem_hold, 0, 0);
 
 	/* delegate work to threads */
-	for(i = 0; i < n_threads; i++) {
+	for(i = 0; i < n_threads; ++i) {
 		if(pthread_create(&ptid[i], NULL, work, (void *) i) != 0)
 			EPRINT("Could not create thread");
 	}
@@ -140,7 +140,7 @@ int main(int argc, char* argv[])
 	/* Compute steady-state temperatures */
 	do {
 		/* delegate work to threads */
-		for(i = 0; i < n_threads; i++) {
+		for(i = 0; i < n_threads; ++i) {
 			sem_post(&sem_start);
 		}
 		for (size_t i = 0; i < n_threads; ++i) {
