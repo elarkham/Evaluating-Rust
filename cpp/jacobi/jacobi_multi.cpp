@@ -95,11 +95,6 @@ int main(int argc, char* argv[])
 	std::vector<pthread_t> ptid;
 	ptid.reserve(n_threads);
 
-	for (i = 0; i < n_threads; i++) {
-		if (pthread_create(&ptid[i], NULL, work, (void *) i) != 0)
-			EPRINT("Could not create thread");
-	}
-
 	/* north, east, and west boundaries */
 	for (i = 0; i < SIZE; i++)
 	{
