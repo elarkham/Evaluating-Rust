@@ -14,7 +14,7 @@ extern crate time;
 
 use time::PreciseTime;
 
-const SIZE : usize = 2560;
+const SIZE : usize = 1280;
 const TEMP : f64 = 50.0;
 const EPSILON : f64 = 0.1;
 
@@ -47,7 +47,7 @@ fn main () {
 						old[i][j+1] + old[i][j-1]) / 4.0;
 				let change = (old[i][j]-new[i][j]).abs();
 				if maxerr < change {
-                    maxerr = change; 
+                    maxerr = change;
                 }
 			}
         }
