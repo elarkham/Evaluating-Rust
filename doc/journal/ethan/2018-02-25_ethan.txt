@@ -1,0 +1,1 @@
+Completed rust implementation of wordfind assignment.
