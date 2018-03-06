@@ -5,7 +5,9 @@
 **  Analyze a set of files for most commonly used words that are atleast
 **  6 characters long and no more than 50 letters long.
 */
+extern crate time;
 
+use time::PreciseTime;
 use std::thread;
 use std::cmp::Ordering;
 use std::sync::mpsc;
@@ -33,21 +35,24 @@ fn main() {
         usage();
         process::exit(-1);
     }
+    let start_time = PreciseTime::now();
 
     // Iterate over all words in each file
     let mut all = 0;
     for i in 1..args.len() {
         let tx = tx.clone();
         let file_name = args[i].clone();
-        all = all | (1 << i);
+        all = all | (1 << (i - 1));
         //println!("File : {} : {}", i, file_name);
         thread::spawn(move || {
+            let id = 1 << (i - 1);
             let file = BufReader::new(File::open(file_name).unwrap());
             file.lines()
                 .flat_map(|line| {
                     line.unwrap()
-                        .split_whitespace()
+                        .split(|c: char| !c.is_alphanumeric())
                         .map(|string| string.to_string())
+                        .map(|string| string.to_lowercase())
                         .collect::<Vec<String>>()
                 })
                 .filter(|word| {
@@ -55,15 +60,14 @@ fn main() {
                     (len < MAX_WORD) && (len > MIN_WORD)
                 })
                 .filter(|word| {
-                    for c in word.chars() {
-                        if !c.is_ascii() || !c.is_alphanumeric() {
-                            return false;
-                        }
-                    }
+                    //for c in word.chars() {
+                    //    if !c.is_ascii() || !c.is_alphanumeric() {
+                    //        return false;
+                    //    }
+                    //}
                     return true;
                 })
                 .for_each(|word| {
-                    let id = 0 | (1 << i);
                     tx.send((word, id)).unwrap();
                 });
             tx.send(("".to_string(), -1)).unwrap();
@@ -97,5 +101,9 @@ fn main() {
             max = word.clone();
         }
     }
-    println!("{}", max);
+    let stop_time = PreciseTime::now();
+    let elapsed = start_time.to(stop_time).to_string();
+    println!("{}", &elapsed[2..]);
+
+    eprintln!("{}", max);
 }
