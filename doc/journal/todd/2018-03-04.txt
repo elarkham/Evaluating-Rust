@@ -1,0 +1,12 @@
+goals met for this week:
+- Finished jacobi with semaphores
+- Registered for URC
+- Was able to run wordfind
+- Finished URC abstract
+
+goals for next week:
+- Put gaussian on hold
+- Analyze jacobi llvm, rust vector implementation (arrays didn't work)
+- Write up jacobi results
+- Write up pi results in report
+- Generate prettier, more readable graphs
