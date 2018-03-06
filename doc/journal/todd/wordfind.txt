@@ -11,3 +11,11 @@
 	"sizeof(*this->mulock)" which was difficult to see when scanning
 	through the code, and it caused numerous valgrind memory errors that
 	didn't quite indicate the cause.
+
+--
+
+2018-03-06
+
+	The Rust wordfind implementation has non-deterministic results for
+	some reason, and it doesn't pick up the world "electronically" due to
+	an incorrect method of parsing that needs to be fixed.
