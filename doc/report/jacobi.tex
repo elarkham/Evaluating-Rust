@@ -1,0 +1,21 @@
+\chapter{Jacobi Plate Temperature Simulation}
+\paragraph{Goals and algorithms.}
+For the two programs implemented to simulate a square plate's temperature
+distribution over time until the a stable heat was achieved throughout the
+entire plate. The jacobi method was chosen as the algorithm to simulate this.
+Parallelization of the algorithm was done by partitioning the plate into
+sectioned rows that each thread would perform the calculation on exclusively
+from one another.
+
+\paragraph{Jacobi Implemented in C++.}
+There are three implementations of Jacobi in C++: A Serial version, and two
+parallel versions. This was done because the initial parallel version, which
+created new threads each iteration, performed poorly compared to the serial
+version; The second parallel version instead created the child threads once,
+and used semaphores to synchronize the threads each iteration instead. This
+second parallel version's performance was much closer to the serial version
+when utilizing only a single child thread. It also proved to scale with
+additional threads at a rate much better than the first parallel version,
+eclipsing both the perfomance of the serial and first parallel version.
+
+\paragraph{User Experience writing Jacobi in C++.}
