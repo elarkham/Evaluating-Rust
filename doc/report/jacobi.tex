@@ -1,13 +1,15 @@
 \chapter{Jacobi Plate Temperature Simulation}
 \paragraph{Goals and algorithms.}
 For the two programs implemented to simulate a square plate's temperature
-distribution over time until the a stable heat was achieved throughout the
+distribution over time until a stable heat was achieved throughout the
 entire plate. The jacobi method was chosen as the algorithm to simulate this.
 Parallelization of the algorithm was done by partitioning the plate into
 sectioned rows that each thread would perform the calculation on exclusively
 from one another.
 
 \paragraph{Jacobi Implemented in C++.}
+%NOTE(todd): Ethan, update this paragraph and add your input to the development
+% of the C++ version of jacobi please.
 There are three implementations of Jacobi in C++: A Serial version, and two
 parallel versions. This was done because the initial parallel version, which
 created new threads each iteration, performed poorly compared to the serial
@@ -16,6 +18,20 @@ and used semaphores to synchronize the threads each iteration instead. This
 second parallel version's performance was much closer to the serial version
 when utilizing only a single child thread. It also proved to scale with
 additional threads at a rate much better than the first parallel version,
-eclipsing both the perfomance of the serial and first parallel version.
+eclipsing both the performance of the serial and first parallel version.
+
+\par Each version of jacobi was timed using the same rules. The clock starts
+after arguments to the program are checked, and just before the arrays
+simulating the plate are initialized. This timer ends after the total number
+of cells below the value 50.0 is calculated.
 
 \paragraph{User Experience writing Jacobi in C++.}
+%TODO(todd): This is for Ethan.
+
+\paragraph{Jacobi Implemented in Rust.}
+Jacobi had three versions implemented in Rust as well, for performance anomalies
+just like the C++ implementation. The three versions are as follows: A Serial
+version, a stdlib parallel version, and a crossbeam parallel version.
+
+\paragraph{User Experience writing Jacobi in Rust.}
+
