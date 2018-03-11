@@ -1,12 +1,17 @@
-% Introduce text presenented in the code font
+% Code font
 \newcommand{\cf}{\ttfamily}
-% Redefinitions for code environments
+
+\newenvironment{waldentable}[1]
+	{\begin{center}\begin{tabular}{#1}\texttt}
+	{\end{tabular}\end{center}}
+
+% Walden code environment
 {\catcode`\^^M=13 \gdef\myobeycr{\catcode`\^^M=13 \def^^M{\\}}%
 \gdef\restorecr{\catcode`\^^M=5 }}
 {\catcode`\^^I=13 \gdef\obeytabs{\catcode`\^^I=13 \def^^I{\hbox{\hskip 4em}}}}
 {\obeyspaces\gdef {\hbox{\hskip0.5em}}}
-% Rust code environment
-\newenvironment{Rust}
+
+\newenvironment{walden}
 {
 	\newcommand{\eval}{\>\>$\Longrightarrow$}
 	\newcommand{\lneval}{\\\>$\Longrightarrow$}
@@ -19,17 +24,4 @@
 	\unskip
 	\end{tabbing}
 }
-% C code environment
-\newenvironment{Rust}
-{
-	\newcommand{\eval}{\>\>$\Longrightarrow$}
-	\newcommand{\lneval}{\\\>$\Longrightarrow$}
-	\renewcommand{\em}{\rmfamily\itshape}
-	\cf \small \obeytabs \obeyspaces \obeycr
-	\begin{tabbing}
-	\qquad\=\hspace*{2em}\=\hspace*{14em}\=\+\kill
-}
-{
-	\unskip
-	\end{tabbing}
-}
+% End of Walden code environment
