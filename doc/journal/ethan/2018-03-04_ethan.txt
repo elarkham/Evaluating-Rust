@@ -1,0 +1,8 @@
+Todd and I regenerated jacobi graphs with some bug fixes and
+tested the jacobi semaphore version to see if there were any
+differences in preformance to the pthreads version. There
+was only a slight improvment.
+
+My wordfind implementation turned out to be non-deterministic
+so some refinements along with minor bug fixes will need to
+be dealt with before we can begin testing it again.
