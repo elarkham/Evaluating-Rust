@@ -5,6 +5,8 @@ SRC = \
 	macro.tex \
 	overview.tex \
 	title.tex \
+	pi.tex \
+	jacobi.tex \
 	report.tex
 
 all: report.pdf
