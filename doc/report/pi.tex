@@ -1,0 +1,37 @@
+\chapter{Pi Digits Computation}
+\paragraph{Goals and algorithms.}
+The goal of these program implementations were to compute the number pi using
+Riemann sums. In other words combining the area under the curve split into small
+rectangular intervals. For
+parallelization, the strategy used was to evenly distribute the
+number interval areas to be calculated among the threads created by the
+program, and then join the results of each thread at the end to form the final
+answer for pi. To allow for a substantial enough runtime to measure, the
+programs were run using an absurdly high number of intervals.
+
+\paragraph{Pi Implemented in C++.}
+The C++ implementation used the POSIX pthread library, and creates $n$
+threads, as the user specifies, to compute the area under the curve. In order
+to isolate the performance of the thread creation, deletion, and parallelization
+of pthreads, the timer used for measuring the program's runtime is started after
+all initialization of variables occurs, and just before creation of the child
+threads.
+
+Once all
+threads are created, the main thread waits idle while trying to join all child
+threads. As each child thread terminates, the final sum of pi is added to. Once
+all threads are finished, the final result is calculated and the timer stops.
+
+\paragraph{User Experience writing pi in C++.}
+Overall this program was trivial to implement in C++, as the problem is not very
+complex, and room for memory errors to appear is narrow. There were no recorded
+memory errors encountered during the writing of the C++ program, and no major
+usability faults regarding pthreads, with one exception: Passing arguments to
+a child thread is certainly type unsafe, and memory unsafe, and could be
+a potential culprit for many runtime errors if not carefully managed. This is
+due to C++ pthreads requiring a single {\cf void *} for all arguments, which
+guarantees almost nothing about the data being passed into the thread, and
+cannot allow for the compiler to check for safety. In the case of Pi, this was
+not a major issue. Only a single integer value was to be passed into each
+thread upon its creation, and so no risk for accessing out-of-bounds memory was
+present.
