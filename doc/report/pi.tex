@@ -22,6 +22,16 @@ threads are created, the main thread waits idle while trying to join all child
 threads. As each child thread terminates, the final sum of pi is added to. Once
 all threads are finished, the final result is calculated and the timer stops.
 
+\paragraph{Pi Implemented in Rust.}
+The Rust implementation, like the C++ implementation, takes $n$ threads, as the
+user specifies, to compute the area under the curve. Another similarity the Rust
+version shares with its C++ counterpart is that it's timer begins after the all
+initialization of variables, and just before creation of the child threads.
+
+Once each thread finishes its work, it sends it's solution to a channel located
+on the main thread where it is added to a global sum. Once all threads are
+finished, the sum final sum is calculated and the timer stops.
+
 \paragraph{User Experience writing pi in C++.}
 Overall this program was trivial to implement in C++, as the problem is not very
 complex, and room for memory errors to appear is narrow. There were no recorded
@@ -35,3 +45,13 @@ cannot allow for the compiler to check for safety. In the case of Pi, this was
 not a major issue. Only a single integer value was to be passed into each
 thread upon its creation, and so no risk for accessing out-of-bounds memory was
 present.
+
+\paragraph{User Experience writing pi in Rust.}
+Writing this program felt much simpler and more inutitve than C++ with pthreads.
+Since channels make asynchronous sums very trivial, the hard part was pretty
+much already solved from the begining. The implementation looks nearly identical
+to what a single threaded pi solver implementation would look like, except for
+the addition of a thread spawn occuring in the main loop and a channel being
+used to collect the sums. Even an individual with little knowledge of the
+language could easily figure out whats going on, a feature that isn't shared
+with the C++ implementation.
