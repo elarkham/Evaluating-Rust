@@ -23,18 +23,18 @@ after arguments to the program are checked, and just before the arrays
 simulating the plate are initialized. This timer ends after the total number
 of cells below the value 50.0 is calculated.
 
+\paragraph{Jacobi Implemented in Rust.}
+Jacobi had three versions implemented in Rust as well, for performance anomalies
+just like the C++ implementation. The three versions are as follows: A Serial
+version, a stdlib parallel version, and a crossbeam parallel version.
+
 \paragraph{User Experience writing Jacobi in C++.}
 This was very simple to implement, it was based off of a single threaded C
 version so most of the math parts were already figured out, it was just a
 matter of making it concurrent. The only major issue that arose was a small
 thread creation loop that went unnoticed until benchmarking was done, it
-spawned threads but then never used them which caused some preformance
+spawned threads but then never used them which caused some performance
 anomalies until it was found and removed.
-
-\paragraph{Jacobi Implemented in Rust.}
-Jacobi had three versions implemented in Rust as well, for performance anomalies
-just like the C++ implementation. The three versions are as follows: A Serial
-version, a stdlib parallel version, and a crossbeam parallel version.
 
 \paragraph{User Experience writing Jacobi in Rust.}
 
