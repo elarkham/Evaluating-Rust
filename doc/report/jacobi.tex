@@ -8,8 +8,6 @@ sectioned rows that each thread would perform the calculation on exclusively
 from one another.
 
 \paragraph{Jacobi Implemented in C++.}
-%NOTE(todd): Ethan, update this paragraph and add your input to the development
-% of the C++ version of jacobi please.
 There are three implementations of Jacobi in C++: A Serial version, and two
 parallel versions. This was done because the initial parallel version, which
 created new threads each iteration, performed poorly compared to the serial
@@ -26,7 +24,12 @@ simulating the plate are initialized. This timer ends after the total number
 of cells below the value 50.0 is calculated.
 
 \paragraph{User Experience writing Jacobi in C++.}
-%TODO(todd): This is for Ethan.
+This was very simple to implement, it was based off of a single threaded C
+version so most of the math parts were already figured out, it was just a
+matter of making it concurrent. The only major issue that arose was a small
+thread creation loop that went unnoticed until benchmarking was done, it
+spawned threads but then never used them which caused some preformance
+anomalies until it was found and removed.
 
 \paragraph{Jacobi Implemented in Rust.}
 Jacobi had three versions implemented in Rust as well, for performance anomalies
