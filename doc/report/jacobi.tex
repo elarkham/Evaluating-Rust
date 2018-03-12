@@ -1,4 +1,4 @@
-\chapter{Jacobi Plate Temperature Simulation}
+\section{Jacobi Plate Temperature Simulation}
 \paragraph{Goals and algorithms.}
 For the two programs implemented to simulate a square plate's temperature
 distribution over time until a stable heat was achieved throughout the
@@ -26,7 +26,24 @@ of cells below the value 50.0 is calculated.
 \paragraph{Jacobi Implemented in Rust.}
 Jacobi had three versions implemented in Rust as well, for performance anomalies
 just like the C++ implementation. The three versions are as follows: A Serial
-version, a stdlib parallel version, and a crossbeam parallel version.
+version, a stdlib parallel version, and a crossbeam parallel version. The serial
+version of jacobi was a straightforward port from the C++ one to Rust, while
+the crossbeam version was made due to the stdlib of Rust being insufficient for
+implementing concurrent jacobi.
+
+\par The first major change made in all versions was
+from allocating the array that represents the plate as a static global to
+dynamically allocating it during runtime as a vector out of necessity. This was
+done as Rust does not allow for global mutable variables, and stack allocation
+of the plate would overflow the stack. The second import implementation detail
+difference for the stdlib version was the huge costs incurred in-order to
+satisfy Rust's borrow checker without the aid of the recently removed
+{\cf std::scoped::thread}. The crossbeam version of rust remedies the
+performance-costing changes made to accommodate the Rust stdlib by utilizing a
+third-party library written in Rust that emulates the functionality provided by
+{\cf std::scoped::thread}.
+
+%TODO(todd): Write more
 
 \paragraph{User Experience writing Jacobi in C++.}
 This was very simple to implement, it was based off of a single threaded C
@@ -37,4 +54,19 @@ spawned threads but then never used them which caused some performance
 anomalies until it was found and removed.
 
 \paragraph{User Experience writing Jacobi in Rust.}
+The serial version of jacobi implemented in Rust was very straightforward. Rust
+lends itself well to porting code from C++ to Rust, as the Rust version was
+based of the C++ version. Rust provides the convenience of zero-initializing
+every variable by default, which removed the need for an amount of the jacobi
+initialization code\footnote{This can also be done explicitly in C++}.
+Attempting to allocate the array that represented the plate managed to trigger
+a segfault, although a minor one, in Rust for the first time. It appears that
+Rust cannot guarantee against over-allocating the stack understandably.
 
+\par Implementing the first parallel version using only the standard library
+was very difficult, as sharing portions of an array among threads and
+guaranteeing the lifetimes of the grid portions is necessary. It was a battle
+against Rust's borrow checker rather than solving the problem, as even though
+joining the threads at the end should guarantee that they do not outlive the
+main thread, Rust was unable to understand this and failed to compile the program.
+%TODO(todd): finish
