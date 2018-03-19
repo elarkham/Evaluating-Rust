@@ -4,7 +4,7 @@ include config.mk
 
 TARGET :=
 LDFLAGS :=
-MODULES := jacobi pi wordfind
+MODULES := jacobi pi wordfind vector
 SRC :=
 
 BUILD = build

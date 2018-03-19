@@ -1,0 +1,7 @@
+Notes on rust's vector implementation:
+
+Rust's vector specification implies nested vectors are not always located in
+contiguous memory. This is because each vector within a vector can be
+independently grown and shrunk.
+
+This may be the cause of the poor performance of the Rust version of jacobi.
