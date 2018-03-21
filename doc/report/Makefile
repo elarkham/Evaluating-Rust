@@ -3,7 +3,7 @@ CFLAGS =
 
 SRC = \
 	macro.tex \
-	overview.tex \
+	abstract.tex \
 	title.tex \
 	pi.tex \
 	jacobi.tex \
