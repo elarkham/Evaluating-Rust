@@ -1,0 +1,12 @@
+goals met for this week:
+- Wrote up pi results
+- Wrote up jacobi results
+- Began figuring out why jacobi performs the way it does
+
+goals not met:
+- Generate prettier graphs
+
+goals for next week:
+- Create poster
+- Generate prettier graphs
+- Find reason for jacobi performance
