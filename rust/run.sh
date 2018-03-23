@@ -10,7 +10,7 @@ if [ "" == "$1" ]; then
 	exit -1
 fi
 mkdir -p ${OUTPUT}
-rm -rf ${OUTPUT}/rust_$NAME_*.txt
+rm -rf ${OUTPUT}/rust_${NAME}*.txt
 
 INTERVALS=$(eval echo {1..$N_INTERVALS})
 THREADS=$(eval echo {1..$N_THREADS})
