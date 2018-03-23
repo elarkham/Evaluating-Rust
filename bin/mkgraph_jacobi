@@ -4,7 +4,7 @@ import sys
 import matplotlib.pyplot as plt
 
 def usage():
-    print("usage <n_samples> <data1> <data2>")
+    print("usage <n_samples> <data1> <data2> <data3> <data4>")
 
 def mklist(filename):
     acc = []
@@ -29,26 +29,31 @@ if (len(sys.argv) < 2):
 
 # Load Multiple datasets
 n_samples = int(sys.argv[1])
-cpp = []
-rust = []
+jacobi0 = []
+jacobi1 = []
+jacobi2 = []
+jacobi3 = []
 for i in range(0, n_samples):
-    cpp.append(mklist(sys.argv[i + 2]))
+    jacobi0.append(mklist(sys.argv[i + 2]))
 for i in range(n_samples, n_samples * 2):
-    rust.append(mklist(sys.argv[i + 2]))
-print("ALL DATA")
-print(cpp)
-print(rust)
+    jacobi1.append(mklist(sys.argv[i + 2]))
+for i in range(2 * n_samples, n_samples * 3):
+    jacobi2.append(mklist(sys.argv[i + 2]))
+for i in range(3 * n_samples, n_samples * 4):
+    jacobi3.append(mklist(sys.argv[i + 2]))
 # Average The datasets together
-avg_cpp = average_data(cpp)
-avg_rust = average_data(rust)
-print("AVERAGES")
-print(avg_cpp)
-print(avg_rust)
-x_range = range(1, min(len(avg_cpp), len(avg_rust)) + 1)
+avg_jacobi0 = average_data(jacobi0)
+avg_jacobi1 = average_data(jacobi1)
+avg_jacobi2 = average_data(jacobi2)
+avg_jacobi3 = average_data(jacobi3)
+x_range = range(1, len(jacobi0) + 1)
 
 plt.xticks(range(1, 15))
-plt.plot(x_range, avg_cpp, 'g--', x_range, avg_rust, 'r--')
-plt.legend(['C++', 'Rust'])
+plt.plot(x_range, avg_jacobi0, 'g--',
+         x_range, avg_jacobi1, 'r--',
+         x_range, avg_jacobi2, 'b--',
+         x_range, avg_jacobi3, 'y--')
+plt.legend(['Rust Serial', 'Rust Crossbeam', 'C++ Serial', 'C++ Parallel'])
 plt.ylabel("duration in seconds")
 plt.xlabel("number of threads")
 plt.show()
