@@ -1,0 +1,15 @@
+Attendance: Ethan Larkham, Todd Gaunt
+
+We spoke about the work we did over spring break and reviewed
+the work that needed to be done still such as:
+-> Refactoring Wordfind
+-> Creating Wordfind implementation with concurrent hash table
+-> Inspect LLVM generated code for Vectors
+-> Working on URC Poster
+
+Considering the work that needed to be done we decided to
+pospone indefinetly the Gaussian implementation.
+
+We briefly discussed our work on the abstract and had Hatcher
+review it for us. He printed it out and marked the parts
+that he felt needed some changes or corrections.
