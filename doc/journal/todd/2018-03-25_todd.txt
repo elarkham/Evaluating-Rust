@@ -1,0 +1,10 @@
+goals met for this week:
+- Created poster draft
+- Generated prettier and more complete graphs for poster
+- Work on explaining jacobi performance
+
+goals not met:
+- Explain jacobi performance
+
+goals for next week:
+- Explain jocobi performance

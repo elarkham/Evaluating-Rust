@@ -1,0 +1,16 @@
+Rust is a new programming language being developed by Mozilla, released in 2015
+aimed at system application developers. As a new systems language, it
+competes with deep-rooted languages such as C++, but it claims to be completely
+memory-safe, thread-safe, and to not lose any performance doing so.
+
+The purpose of this project was to compare Rust with C++. Rust
+was tested to see if it held up to its claims of being nearly as performant as C++,
+and if the language made writing safe programs easy. These tests and analysis
+were carried out using three small programs written at least twice in each Rust and C++. Each
+implementation attempted to use as similar an algorithm as possible to solve
+the problem at hand, and were used to benchmark performance.
+
+The two compilers used for this comparison were clang++ and rustc.
+These two compilers were chosen because of their ability to both generate LLVM
+IR, which we looked at to see how each compiler implemented language constructs
+used in each language. 
