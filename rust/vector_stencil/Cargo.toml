@@ -1,5 +1,5 @@
 [package]
-name = "vector"
+name = "vector_stencil"
 version = "0.1.0"
 authors = ["Todd Gaunt <toddgaunt@protonmail.ch>"]
 

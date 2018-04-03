@@ -28,7 +28,7 @@ main()
 	/* Start the timer. Note this is wallclock time, not CPU time. */
 	clock_gettime(CLOCK_MONOTONIC, &start);
 	a[56][32] = 1.0;
-	for (i = 0; i < 1000; ++i) {
+	for (i = 0; i < 10000; ++i) {
 		for (j = 1; j < SIZE - 1; ++j) {
 			for (k = 1; k < SIZE - 1; ++k) {
 					sum += a[j][k - 1]

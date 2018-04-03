@@ -18,10 +18,11 @@ fn main() {
 
     // let start = PreciseTime::now();
     a[56][32] = 1.0;
-    for _ in 0..10000 {
-        for i in 1..127 {
-            for j in 1..127 {
-                sum = sum + a[i][j]
+    for i in 1..127 {
+        for j in 1..127 {
+            for _ in 0..10000 {
+                sum = sum + a[i][j + 1] + a[i][j - 1] + a[i + 1][j] + a[i - 1][j];
+                //println!("{}", sum);
             }
         }
     }
