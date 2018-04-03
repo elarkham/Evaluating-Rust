@@ -31,7 +31,10 @@ main()
 	for (i = 0; i < 1000; ++i) {
 		for (j = 1; j < SIZE - 1; ++j) {
 			for (k = 1; k < SIZE - 1; ++k) {
-				sum += a[j][k];
+					sum += a[j][k - 1]
+						+ a[j][k + 1]
+						+ a[j - 1][k]
+						+ a[j + 1][k];
 			}
 		}
 	}

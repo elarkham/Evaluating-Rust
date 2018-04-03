@@ -4,7 +4,7 @@ include config.mk
 
 TARGET :=
 LDFLAGS :=
-MODULES := jacobi pi wordfind vector
+MODULES := jacobi pi wordfind vector vector_stencil
 SRC :=
 
 BUILD = build
@@ -16,9 +16,15 @@ OBJ := $(patsubst %.cpp, $(BUILD)/%.o, $(filter %.cpp, $(SRC)))
 
 # Standard targets
 all: options $(TARGET)
-	@echo $?
 
 # Standard build
+$(BUILD)/%_O0.o: %.cpp
+	@printf "CC [O0] $@\n"
+	@mkdir -p $(shell dirname $@)
+	@$(CC) $(CFLAGS) -O0 -c -o $@ $<
+	@$(CC) $(CFLAGS) -O0 -S -o $(@:.o=.s) $<
+
+# Reduced size build
 $(BUILD)/%_Os.o: %.cpp
 	@printf "CC [Os] $@\n"
 	@mkdir -p $(shell dirname $@)
