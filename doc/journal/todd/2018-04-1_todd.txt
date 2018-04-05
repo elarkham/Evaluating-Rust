@@ -1,0 +1,10 @@
+goals met for this week:
+- Found a hint to explain jacobi performance. Rust vectors appear to perform
+poorly when iterating through them in the pattern the jacobi algorithm
+necessitates.
+- Updated the URC poster to Collette's suggestions.
+
+goals for next week:
+- Finish the URC poster
+- Run the vector benchmarks on Ethan's server to explain the performance of
+jacobi.

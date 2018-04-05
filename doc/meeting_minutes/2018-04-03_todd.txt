@@ -1,0 +1,9 @@
+Discussed with hatcher the vector micro-benchmarks, and how they
+indicate what may be causing Rust's poor performance in jacobi.
+
+Also told him the current status of the URC poster, which was mostly complete,
+and how we aim to have a finished version before our next meeting on Tuesday
+which we can review with him before the URC.
+
+We plan to also have some explaination of Rust's poor performance with the
+wordfind program by next week as well.
