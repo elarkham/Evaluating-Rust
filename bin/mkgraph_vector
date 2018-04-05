@@ -1,0 +1,59 @@
+#!/usr/bin/env python3
+
+import sys
+import matplotlib.pyplot as plt
+
+def usage():
+    print("usage <n_samples> <data1> <data2> <data3> <data4>")
+
+def mklist(filename):
+    acc = []
+    with open(filename, "r") as f:
+        for line in f:
+            acc.append(float(line[:-3]))
+    return acc
+
+def average_data(dataset):
+    avg_list = []
+    for i in range(0, len(dataset[0])):
+        avg = 0
+        for j in range(0, len(dataset)):
+            avg = avg + dataset[j][i]
+        avg = avg / len(dataset[0])
+        avg_list.append(avg)
+    return avg_list
+
+if (len(sys.argv) < 2):
+    print("usage: mkgraph n_samples (n * cpp) (n * rust)")
+    exit(-1)
+
+# Load Multiple datasets
+n_samples = int(sys.argv[1])
+vector0 = []
+vector1 = []
+vector2 = []
+vector3 = []
+for i in range(0, n_samples):
+    vector0.append(mklist(sys.argv[i + 2]))
+for i in range(n_samples, n_samples * 2):
+    vector1.append(mklist(sys.argv[i + 2]))
+for i in range(2 * n_samples, n_samples * 3):
+    vector2.append(mklist(sys.argv[i + 2]))
+for i in range(3 * n_samples, n_samples * 4):
+    vector3.append(mklist(sys.argv[i + 2]))
+# Average The datasets together
+avg_vector0 = average_data(vector0)
+avg_vector1 = average_data(vector1)
+avg_vector2 = average_data(vector2)
+avg_vector3 = average_data(vector3)
+x_range = range(1, len(vector0) + 1)
+
+plt.xticks(range(1, 15))
+plt.plot(x_range, avg_vector0, 'g--',
+         x_range, avg_vector1, 'r--',
+         x_range, avg_vector2, 'b--',
+         x_range, avg_vector3, 'y--')
+plt.legend(['Rust Linear', 'Rust Stencil', 'C++ Linear', 'C++ Stencil'])
+plt.ylabel("duration in seconds")
+plt.xlabel("number of threads")
+plt.show()
