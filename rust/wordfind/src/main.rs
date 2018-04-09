@@ -51,21 +51,12 @@ fn main() {
                 .flat_map(|line| {
                     line.unwrap()
                         .split(|c: char| !c.is_alphanumeric())
-                        .map(|string| string.to_string())
-                        .map(|string| string.to_lowercase())
+                        .map(|string| string.to_string().to_lowercase())
                         .collect::<Vec<String>>()
                 })
                 .filter(|word| {
                     let len = word.len();
                     (len < MAX_WORD) && (len > MIN_WORD)
-                })
-                .filter(|word| {
-                    //for c in word.chars() {
-                    //    if !c.is_ascii() || !c.is_alphanumeric() {
-                    //        return false;
-                    //    }
-                    //}
-                    return true;
                 })
                 .for_each(|word| {
                     tx.send((word, id)).unwrap();
