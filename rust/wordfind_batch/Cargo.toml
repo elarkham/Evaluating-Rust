@@ -1,5 +1,5 @@
 [package]
-name = "wordfind"
+name = "wordfind_batch"
 version = "0.1.0"
 authors = ["Ethan Larkham <ethanlarkham@gmail.com>"]
 
