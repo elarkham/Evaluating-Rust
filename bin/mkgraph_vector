@@ -55,5 +55,5 @@ plt.plot(x_range, avg_vector0, 'g--',
          x_range, avg_vector3, 'y--')
 plt.legend(['Rust Linear', 'Rust Stencil', 'C++ Linear', 'C++ Stencil'])
 plt.ylabel("duration in seconds")
-plt.xlabel("number of threads")
+plt.xlabel("number of iterations (x10000)")
 plt.show()
